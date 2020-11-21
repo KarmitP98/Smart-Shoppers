@@ -7,26 +7,24 @@
          src = 'assets/logo/shoppers-logo-black.jpg'>
     &nbsp;
     <button (click) = 'selectStore()' mat-button>
-      {{user.preferedStore ? "" : "Select Store"}}
+      {{user.preferedStore ? store?.sName : "Select Store"}}
     </button>
     &nbsp;
     <button color = 'primary' mat-button>Shopping List</button>
+
     <span class = 'spacer'></span>
-    <button (click) = 'setup()' disabled mat-raised-button>Setup</button>
-    &nbsp;
+
     <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div class = 'text-center container-lg'>
+<div class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
+  <div *ngIf = 'user?.preferedStore'>
+    <app-store *ngIf = 'store' [store] = 'this.getStore()'></app-store>
+  </div>
 
-  <mat-form-field appearance = 'outline' class = 'w-100'>
-    <mat-label>Search item...</mat-label>
-    <input (keypress) = '$event.key === "Enter" ? search(): ""' [(ngModel)] = 'itemName'
-           matInput
-           placeholder = 'Item Name'>
-    <mat-icon (click) = 'search()' class = 'search-icon' matSuffix>search</mat-icon>
-  </mat-form-field>
-
+  <div *ngIf = '!user?.preferedStore' style = 'margin-top: 40vh; cursor: pointer'>
+    <a (click) = 'selectStore()'>Pick a prefferd store!</a>
+  </div>
 
 </div>

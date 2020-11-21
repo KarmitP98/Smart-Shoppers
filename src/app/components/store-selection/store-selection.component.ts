@@ -1,8 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { StoreModel } from '../../model/models';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { StoreModel, UserModel } from '../../model/models';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { StoreService } from '../../services/store.service';
+import { UserService } from '../../services/user.service';
 
 @Component( {
               selector: 'app-store-selection',
@@ -15,38 +16,32 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
   stores: StoreModel[] = this.allStores;
   multi = false;
   storeSub: Subscription;
-  postalCode: string;
-  city: string;
-  province: string;
-  country: string;
-  selected: string[] = [];
+  postalCode: string = '';
+  city: string = '';
+  province: string = '';
+  country: string = '';
   chosen: string;
 
 
-  constructor( @Inject( MAT_DIALOG_DATA ) public data: string,
-               private storeService: StoreService ) {
+  constructor( @Inject( MAT_DIALOG_DATA ) public data: UserModel,
+               private storeService: StoreService,
+               private userService: UserService,
+               private dialog: MatDialog ) {
 
 
-    if ( data === 'manager' ) {
-      this.multi = true;
-      this.storeSub = this.storeService.fetchStore( 'sManagerId', '==', '' )
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.allStores = value;
-                              this.stores = value;
-                            }
-                          } );
-    } else {
-      this.storeSub = this.storeService.fetchStore()
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.allStores = value;
-                              this.stores = value;
-                            }
-                          } );
+    if ( this.data.preferedStore ) {
+      this.chosen = this.data.preferedStore;
     }
+
+    this.storeSub = this.storeService.fetchStore()
+                        .valueChanges()
+                        .subscribe( value => {
+                          if ( value?.length > 0 ) {
+                            this.allStores = value.sort( a => a.sId === this.data.preferedStore ? -1 : 1 );
+                            this.stores = this.allStores;
+                          }
+                        } );
+
   }
 
   ngOnInit(): void {
@@ -61,46 +56,26 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
     // this.stores = this.stores.filter(store => store)
     switch ( type ) {
       case 1:
-        this.stores = this.allStores.filter( store => store.sCountry.toUpperCase() === this.country.toUpperCase() );
+        this.stores = this.allStores.filter( store => store.sCountry.toUpperCase().includes( this.country.toUpperCase() ) );
         break;
       case 2:
-        this.stores = this.allStores.filter( store => store.sProvince.toUpperCase() === this.province.toUpperCase() );
+        this.stores = this.allStores.filter( store => store.sProvince.toUpperCase().includes( this.province.toUpperCase() ) );
         break;
       case 3:
-        this.stores = this.allStores.filter( store => store.sCity.toUpperCase() === this.city.toUpperCase() );
+        this.stores = this.allStores.filter( store => store.sCity.toUpperCase().includes( this.city.toUpperCase() ) );
         break;
       case 4:
-        this.stores = this.allStores.filter( store => store.sAreaCode.toUpperCase() === this.postalCode.slice( 0, 3 ).toUpperCase() );
+        this.stores = this.allStores.filter( store => store.sPostalCode.toUpperCase().includes( this.postalCode.toUpperCase() ) );
         break;
     }
 
   }
 
-  addStore( store: StoreModel ): void {
-    if ( this.multi ) {
-      let found = false;
-      for ( let i = 0; i < this.selected.length; i++ ) {
-        if ( this.selected[i] === store.sId ) {
-          this.selected.splice( i, 1 );
-          found = true;
-        }
-      }
-      if ( !found ) {
-        this.selected.push( store.sId );
-      }
-    } else {
-      if ( this.chosen === store.sId ) {
-        this.chosen = null;
-      } else {
-        this.chosen = store.sId;
-      }
-    }
+  selectStore( store: StoreModel ): void {
+    this.chosen = store.sId;
   }
 
   isSelected( store: StoreModel ): boolean {
-    if ( this.multi ) {
-      return this.selected.some( value => value.toUpperCase() === store.sId.toUpperCase() );
-    }
     return this.chosen === store.sId;
   }
 
@@ -112,5 +87,15 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
     if ( $event.key === 'Enter' ) {
       this.filter( num );
     }
+  }
+
+  addStore( save: boolean ) {
+    if ( save ) {
+      this.data.preferedStore = this.chosen;
+      this.userService.updateUser( this.data );
+    }
+
+    this.dialog.closeAll();
+
   }
 }

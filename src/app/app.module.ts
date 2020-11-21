@@ -38,6 +38,10 @@ import { ShoppinpListItemComponent } from './components/shoppinp-list-view/shopp
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { StoreSelectionComponent } from './components/store-selection/store-selection.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ManagerEditComponent } from './components/user/admin/manager-edit/manager-edit.component';
+import { StoreEditComponent } from './components/user/admin/store-edit/store-edit.component';
+import { MatListModule } from '@angular/material/list';
+import { StoreComponent } from './components/store/store.component';
 
 @NgModule( {
              declarations: [
@@ -51,7 +55,10 @@ import { MatDialogModule } from '@angular/material/dialog';
                ShoppinpListViewComponent,
                ShoppinpListComponent,
                ShoppinpListItemComponent,
-               StoreSelectionComponent
+               StoreSelectionComponent,
+               ManagerEditComponent,
+               StoreEditComponent,
+               StoreComponent
              ],
              imports: [
                BrowserModule,
@@ -78,6 +85,7 @@ import { MatDialogModule } from '@angular/material/dialog';
                MatGridListModule,
                MatButtonToggleModule,
                MatSidenavModule,
+               MatListModule,
                AngularFireModule.initializeApp( environment.firebaseConfig ),
                FormsModule, MatDialogModule
              ],

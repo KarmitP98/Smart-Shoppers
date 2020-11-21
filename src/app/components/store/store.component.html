@@ -1,0 +1,47 @@
+<br>
+<h1>Welcome to ShoppersLand Quarry!</h1>
+<mat-form-field appearance = 'outline'>
+  <mat-label>Category</mat-label>
+  <mat-select [(ngModel)] = 'category'>
+    <mat-option [value] = 'null'>All</mat-option>
+    <mat-option *ngFor = 'let cat of categories' [value] = 'cat'>{{cat | titlecase}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance = 'outline' class = 'w-75'>
+  <mat-label>Search item...</mat-label>
+  <input (keypress) = '$event.key === "Enter" ? search(): ""' (keyup) = 'search()'
+         [(ngModel)] = 'itemName'
+         matInput
+         placeholder = 'Item Name'>
+  <mat-icon (click) = 'search()' class = 'search-icon' matSuffix>search</mat-icon>
+</mat-form-field>
+<hr>
+
+<div class = 'text-center'>
+
+  <mat-grid-list cols = '4' rowHeight = '1:2'>
+    <mat-grid-tile *ngFor = 'let item of this.items'>
+
+      <mat-card class = 'mat-elevation-z4 text-left item-card' style = 'width: 95%;height: 95%;'>
+        <mat-card-header>
+          <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' matCardAvatar>
+          <mat-card-title>
+            {{item.itemDetail.iName}}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{item.itemDetail.iCategory}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' mat-card-image>
+        <mat-card-content>
+          <br>
+          {{item.itemDetail.iDesc}}
+        </mat-card-content>
+        <mat-dialog-actions style = 'bottom: 0'>
+          <button color = 'accent' mat-raised-button>Add to Shopping List</button>
+        </mat-dialog-actions>
+      </mat-card>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,11 +1,11 @@
-export enum CATEGORIES {
-  snacks,
-  dairy,
-  clothing,
-  electronic,
-  indoor,
-  outdoor,
-  garden,
-  home,
-  cooking
-}
+export const CATEGORIES: string[] = [
+  'snacks',
+  'dairy',
+  'clothing',
+  'electronic',
+  'indoor',
+  'outdoor',
+  'garden',
+  'home',
+  'cooking'
+];
