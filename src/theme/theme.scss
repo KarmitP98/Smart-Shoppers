@@ -1,0 +1,109 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+/* For use in src/lib/core/theming/_palette.scss */
+$mat-rich-black: (
+  50 : #e2e4e5,
+  100 : #b6bbbf,
+  200 : #868d95,
+  300 : #565f6a,
+  400 : #313d4a,
+  500 : #0d1b2a,
+  600 : #0b1825,
+  700 : #09141f,
+  800 : #071019,
+  900 : #03080f,
+  A100 : #528bff,
+  A200 : #1f69ff,
+  A400 : #004eeb,
+  A700 : #0046d1,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$mat-platinum: (
+  50 : #fbfbfb,
+  100 : #f6f6f5,
+  200 : #f0f0ee,
+  300 : #e9eae7,
+  400 : #e5e6e2,
+  500 : #e0e1dd,
+  600 : #dcddd9,
+  700 : #d8d9d4,
+  800 : #d3d5cf,
+  900 : #cbcdc7,
+  A100 : #ffffff,
+  A200 : #ffffff,
+  A400 : #ffffff,
+  A700 : #ffffff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$mat-caribbean-green: (
+  50 : #e1faf4,
+  100 : #b4f3e3,
+  200 : #83ebd0,
+  300 : #51e2bd,
+  400 : #2bdcae,
+  500 : #06d6a0,
+  600 : #05d198,
+  700 : #04cc8e,
+  800 : #03c684,
+  900 : #02bc73,
+  A100 : #e5fff3,
+  A200 : #b2ffdd,
+  A400 : #7fffc6,
+  A700 : #65ffbb,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+
+$primary: mat-palette($mat-rich-black, 500, 100, 700);
+$accent: mat-palette($mat-caribbean-green, 500, 100, 700);
+
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);

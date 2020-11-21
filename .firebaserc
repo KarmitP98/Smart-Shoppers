@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "smart-shoppers-2a1ab": {
+      "hosting": {
+        "Smart-Shoppers": [
+          "smart-shoppers-2a1ab"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "smart-shoppers-2a1ab"
+  }
+}

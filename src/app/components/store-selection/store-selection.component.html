@@ -1,0 +1,49 @@
+<div class = 'text-center' matDialogTitle>
+  Pick a Store
+</div>
+<div class = 'text-center' matDialogContent>
+  <mat-form-field appearance = 'outline'>
+    <mat-label>Country</mat-label>
+    <input [(ngModel)] = 'country' matInput
+           placeholder = 'Canada'
+           type = 'text'>
+    <mat-icon (click) = 'filter(1)' class = 'search-icon' matSuffix>search</mat-icon>
+  </mat-form-field>
+  ||
+  <mat-form-field appearance = 'outline'>
+    <mat-label>Province</mat-label>
+    <input [(ngModel)] = 'province' matInput
+           placeholder = 'Ontario'
+           type = 'text'>
+    <mat-icon (click) = 'filter(2)' class = 'search-icon' matSuffix>search</mat-icon>
+  </mat-form-field>
+  ||
+  <mat-form-field appearance = 'outline'>
+    <mat-label>City</mat-label>
+    <input [(ngModel)] = 'city' matInput
+           placeholder = 'Toronto'
+           type = 'text'>
+    <mat-icon (click) = 'filter(3)' class = 'search-icon' matSuffix>search</mat-icon>
+  </mat-form-field>
+  ||
+  <mat-form-field appearance = 'outline'>
+    <mat-label>Postal Code</mat-label>
+    <input [(ngModel)] = 'postalCode' matInput
+           placeholder = 'A1A1A1'
+           type = 'text'>
+    <mat-icon (click) = 'filter(4)' class = 'search-icon' matSuffix>search</mat-icon>
+  </mat-form-field>
+  &nbsp;
+  <!--  <button mat-raised-button color='warn' (click)='filter()'>Search</button>-->
+  <hr>
+  <mat-card (click) = 'addStore(store)' *ngFor = 'let store of stores'>
+    <mat-card-header>
+      <mat-card-title>{{store.sName}}</mat-card-title>
+      <mat-card-subtitle>{{store.sAddress}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>
+<div class = 'float-right' matDialogActions>
+  <button [mat-dialog-close] = 'multi ? selected : chosen' color = 'primary' mat-raised-button>Select</button>
+  <button color = 'warn' mat-dialog-close mat-raised-button>Exit</button>
+</div>

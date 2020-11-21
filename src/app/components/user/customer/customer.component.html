@@ -1,0 +1,29 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <img alt = 'Company Logo'
+         class = 'company-logo-toolbar'
+         routerLink = 'home'
+         src = 'assets/logo/shoppers-logo-black.jpg'>
+    &nbsp;
+    <button (click) = 'selectStore()' mat-button>
+      {{user.preferedStore ? "" : "Select Store"}}
+    </button>
+    &nbsp;
+    <button color = 'primary' mat-button>Shopping List</button>
+    <span class = 'spacer'></span>
+    <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class = 'text-center container-lg'>
+
+  <mat-form-field appearance = 'outline' class = 'w-100'>
+    <mat-label>Search item...</mat-label>
+    <input (keypress) = '$event.key === "Enter" ? search(): ""' [(ngModel)] = 'itemName'
+           matInput
+           placeholder = 'Item Name'>
+    <mat-icon (click) = 'search()' class = 'search-icon' matSuffix>search</mat-icon>
+  </mat-form-field>
+
+
+</div>
