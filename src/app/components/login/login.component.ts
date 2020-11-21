@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { ItemService } from '../../services/item.service';
 
 @Component( {
               selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
   uEmail: string;
   uPassword: string;
 
-  constructor( private userService: UserService ) { }
+  constructor( private userService: UserService,
+               private itemService: ItemService ) { }
 
   ngOnInit(): void {
   }
@@ -20,4 +22,6 @@ export class LoginComponent implements OnInit {
   loginWithEmail(): void {
     this.userService.loginWithEmailandPassword( this.uEmail, this.uPassword, this.userLevel );
   }
+
+
 }

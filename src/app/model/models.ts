@@ -16,25 +16,26 @@ export class UserModel {
 export class StoreModel {
   sId: string;
   sName: string;
-  sAddress: string;
+  sStreet: string;
   sPostalCode: string;
   sAreaCode: string;
   sCity: string;
   sProvince: string;
   sCountry: string;
-  sManagerId: string;
   sPriceMult: number;
   sItems: ItemModel[];
+  sManagerId?: string;
 }
 
 export class ItemModel {
   itemDetail: ItemDetailModel;
-  iQ: number;
   iStatus: string;
   iStoreQuantity: number;
   onSale: boolean;
   iBought: boolean;
-  newPrice: number;
+  price: number;
+  isle: number;
+  iQ?: number;
   oldPrice?: number;
 }
 
@@ -44,6 +45,7 @@ export class ItemDetailModel {
   iDesc: string;
   iIcon: string;
   iCategory: string;
+  iPrice?: number;
 }
 
 export class ShoppingList {

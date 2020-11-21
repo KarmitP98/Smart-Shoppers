@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { UserModel } from '../../../model/models';
+import { UserService } from '../../../services/user.service';
+import { StoreService } from '../../../services/store.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component( {
               selector: 'app-admin',
@@ -7,9 +11,18 @@ import { Component, OnInit } from '@angular/core';
             } )
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+
+  @Input( 'user' ) user: UserModel;
+
+  constructor( public userService: UserService,
+               public storeService: StoreService,
+               public dialog: MatDialog ) { }
 
   ngOnInit(): void {
+  }
+
+  selectStore(): void {
+
   }
 
 }

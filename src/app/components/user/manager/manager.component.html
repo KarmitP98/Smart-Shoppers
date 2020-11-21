@@ -1,1 +1,16 @@
-<p>manager works!</p>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <img alt = 'Company Logo'
+         class = 'company-logo-toolbar'
+         routerLink = 'home'
+         src = 'assets/logo/shoppers-logo-black.jpg'>
+    &nbsp;
+    <button (click) = 'selectStore()' color = 'primary'
+            mat-button>Stores
+    </button>
+    <span class = 'spacer'></span>
+    <button (click) = 'this.userService.logOut()'
+            color = 'warn' mat-raised-button>Log Out
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

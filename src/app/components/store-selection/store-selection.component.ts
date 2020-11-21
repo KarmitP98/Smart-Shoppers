@@ -26,15 +26,27 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
   constructor( @Inject( MAT_DIALOG_DATA ) public data: string,
                private storeService: StoreService ) {
 
-    this.storeSub = this.storeService.fetchStore()
-                        .valueChanges()
-                        .subscribe( value => {
-                          if ( value?.length > 0 ) {
-                            this.allStores = value;
-                          }
-                        } );
 
-
+    if ( data === 'manager' ) {
+      this.multi = true;
+      this.storeSub = this.storeService.fetchStore( 'sManagerId', '==', '' )
+                          .valueChanges()
+                          .subscribe( value => {
+                            if ( value?.length > 0 ) {
+                              this.allStores = value;
+                              this.stores = value;
+                            }
+                          } );
+    } else {
+      this.storeSub = this.storeService.fetchStore()
+                          .valueChanges()
+                          .subscribe( value => {
+                            if ( value?.length > 0 ) {
+                              this.allStores = value;
+                              this.stores = value;
+                            }
+                          } );
+    }
   }
 
   ngOnInit(): void {
@@ -82,6 +94,23 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
       } else {
         this.chosen = store.sId;
       }
+    }
+  }
+
+  isSelected( store: StoreModel ): boolean {
+    if ( this.multi ) {
+      return this.selected.some( value => value.toUpperCase() === store.sId.toUpperCase() );
+    }
+    return this.chosen === store.sId;
+  }
+
+  colorSelector(): any {
+    return Math.random() > 0.3 ? 'primary' : Math.random() > 0.6 ? 'accent' : 'warn';
+  }
+
+  keyPress( $event: KeyboardEvent, num: number ): void {
+    if ( $event.key === 'Enter' ) {
+      this.filter( num );
     }
   }
 }

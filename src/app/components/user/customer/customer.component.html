@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <mat-toolbar>
   <mat-toolbar-row>
     <img alt = 'Company Logo'
@@ -11,6 +12,8 @@
     &nbsp;
     <button color = 'primary' mat-button>Shopping List</button>
     <span class = 'spacer'></span>
+    <button (click) = 'setup()' disabled mat-raised-button>Setup</button>
+    &nbsp;
     <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>
   </mat-toolbar-row>
 </mat-toolbar>

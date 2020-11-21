@@ -1,3 +1,6 @@
+<!--suppress ALL -->
+
+
 <div class = 'text-center' matDialogTitle>
   Pick a Store
 </div>
@@ -6,6 +9,7 @@
     <mat-label>Country</mat-label>
     <input [(ngModel)] = 'country' matInput
            placeholder = 'Canada'
+           (keypress) = 'keyPress($event, 1)'
            type = 'text'>
     <mat-icon (click) = 'filter(1)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
@@ -13,7 +17,8 @@
   <mat-form-field appearance = 'outline'>
     <mat-label>Province</mat-label>
     <input [(ngModel)] = 'province' matInput
-           placeholder = 'Ontario'
+           (keypress) = 'keyPress($event, 2)'
+           placeholder = 'ON'
            type = 'text'>
     <mat-icon (click) = 'filter(2)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
@@ -22,6 +27,7 @@
     <mat-label>City</mat-label>
     <input [(ngModel)] = 'city' matInput
            placeholder = 'Toronto'
+           (keypress) = 'keyPress($event, 3)'
            type = 'text'>
     <mat-icon (click) = 'filter(3)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
@@ -30,19 +36,33 @@
     <mat-label>Postal Code</mat-label>
     <input [(ngModel)] = 'postalCode' matInput
            placeholder = 'A1A1A1'
+           (keypress) = 'keyPress($event, 4)'
            type = 'text'>
     <mat-icon (click) = 'filter(4)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
   &nbsp;
   <!--  <button mat-raised-button color='warn' (click)='filter()'>Search</button>-->
   <hr>
-  <mat-card (click) = 'addStore(store)' *ngFor = 'let store of stores'>
+
+  <mat-card (click) = 'addStore(store)'
+            *ngFor = 'let store of stores'
+            [matBadge] = 'isSelected(store) ? "#" : ""' class = 'mat-elevation-z4 text-left store-card w-75'
+            matBadgeColor = 'warn'
+            style = 'margin-bottom: 8px;'>
     <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon [color] = 'isSelected(store) ? "accent" : "warn"'>storefront</mat-icon>
+      </div>
       <mat-card-title>{{store.sName}}</mat-card-title>
-      <mat-card-subtitle>{{store.sAddress}}</mat-card-subtitle>
+      <mat-card-subtitle>{{store.sStreet}}</mat-card-subtitle>
+      <mat-card-subtitle>{{store.sCity}}, {{store.sProvince}}, {{store.sCountry}}
+                                        - {{store.sPostalCode}}</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
+
 </div>
+
+
 <div class = 'float-right' matDialogActions>
   <button [mat-dialog-close] = 'multi ? selected : chosen' color = 'primary' mat-raised-button>Select</button>
   <button color = 'warn' mat-dialog-close mat-raised-button>Exit</button>
