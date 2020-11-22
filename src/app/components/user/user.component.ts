@@ -27,12 +27,19 @@ export class UserComponent implements OnInit, OnDestroy {
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
                            this.user = value[0];
+                           this.userSub.unsubscribe();
+                           if ( this.user.uType === 'customer' ) {
+                             this.router.navigate( [ this.user.uId, 'customer' ] );
+                           } else if ( this.user.uType === 'manager' ) {
+                             this.router.navigate( [ this.user.uId, 'manager' ] );
+                           } else {
+                             this.router.navigate( [ this.user.uId, 'admin' ] );
+                           }
                          }
                        } );
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
   }
 
 }

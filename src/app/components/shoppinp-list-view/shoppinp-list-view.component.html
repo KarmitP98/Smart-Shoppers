@@ -1,1 +1,70 @@
-<p>shoppinp-list-view works!</p>
+<div *ngIf = 'user' class = 'text-center container' style = 'margin-top: 5vh;'>
+
+  <mat-card class = 'text-left'>
+    <mat-card-header>
+      <mat-card-title> Current Shopping List</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role = 'list'>
+        <mat-list-item *ngFor = 'let item of user.currentShoppingList.sItems'>
+          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' matListIcon>
+          <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
+          <div mat-line>Store: <b>{{item.iStoreName}}</b></div>
+          <div mat-line>Quanitiy: <b>{{item.iQuantity}}</b>
+                        &nbsp;&nbsp;&nbsp;
+            <mat-button-toggle-group appearance = 'standard'>
+              <mat-button-toggle [disabled] = 'item.iQuantity === item.item.iStoreQuantity'>
+                <mat-icon (click) = 'changeQuantity(item,1)' color = 'accent'>arrow_circle_up</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle [disabled] = 'item.iQuantity < 1 '>
+                <mat-icon (click) = 'changeQuantity(item,-1)' color = 'warn'>arrow_circle_down</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </mat-list-item>
+      </mat-list>
+
+      <mat-card-actions align = 'end'>
+        <button (click) = 'saveShoppingList(true)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
+                color = 'accent'
+                mat-icon-button
+                matTooltip = 'Save'
+                style = 'width: 75px;'>
+          <mat-icon>check_circle</mat-icon>
+        </button>
+        <button (click) = 'saveShoppingList(false)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
+                color = 'warn'
+                mat-icon-button
+                matTooltip = 'Cancel'
+                style = 'width: 75px;'>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+
+  <hr>
+  <h2>Previous Shopping Lists</h2>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor = 'let list of this.user.shoppingLists' class = 'text-left'>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{list.sId}}</mat-panel-title>
+        <mat-panel-description>
+          <mat-icon
+            [color] = 'list.sStatus === "saved" ? "accent" : "warn"'>{{list.sStatus === "saved" ? "check_circle" : "cancel"}}
+          </mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-list role = 'list'>
+        <mat-list-item *ngFor = 'let item of list.sItems'>
+          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' matListIcon>
+          <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
+          <div mat-line>Store: <b>{{item.iStoreName}}</b></div>
+          <div mat-line>Quanitiy: <b>{{item.iQuantity}}</b></div>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

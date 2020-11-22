@@ -1,10 +1,8 @@
-<app-customer *ngIf = 'user?.uType === "customer"'
-              [user] = 'user'>
-
-</app-customer>
-<app-manager *ngIf = 'user?.uType === "manager"'>
-
-</app-manager>
-<app-admin *ngIf = 'user?.uType === "admin"'>
-
-</app-admin>
+<!--<app-customer *ngIf = 'user?.uType === "customer"'-->
+<!--              [user] = 'user'>-->
+<!--</app-customer>-->
+<!--<app-manager *ngIf = 'user?.uType === "manager"'>-->
+<!--</app-manager>-->
+<!--<app-admin *ngIf = 'user?.uType === "admin"'>-->
+<!--</app-admin>-->
+<router-outlet></router-outlet>

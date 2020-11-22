@@ -1,0 +1,23 @@
+<mat-grid-list cols = '2'>
+  <mat-grid-tile>
+    <img [src] = 'data.item.itemDetail.iIcon'
+         alt = 'Icon Image'
+         style = 'width: 100%; height: available'>
+  </mat-grid-tile>
+  <mat-grid-tile>
+
+    <h1>{{data.item.itemDetail.iName}}</h1>
+    <br>
+    <h3>{{data.item.itemDetail.iDesc}}</h3>
+    <br>
+    <h4>{{data.item.isle}}</h4>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-dialog-actions align = 'end'>
+  <button (click) = 'addToList()'
+          [color] = 'data.item.iStoreQuantity > 0 ? "accent":"warn"'
+          [disabled] = 'data.item.iStoreQuantity === 0'
+          mat-raised-button>
+    Add to List
+  </button>
+</mat-dialog-actions>

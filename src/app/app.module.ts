@@ -42,6 +42,9 @@ import { ManagerEditComponent } from './components/user/admin/manager-edit/manag
 import { StoreEditComponent } from './components/user/admin/store-edit/store-edit.component';
 import { MatListModule } from '@angular/material/list';
 import { StoreComponent } from './components/store/store.component';
+import { ItemCardComponent } from './components/item-card/item-card.component';
+import { ItemCardDetailComponent } from './components/item-card/item-card-detail/item-card-detail.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule( {
              declarations: [
@@ -58,7 +61,9 @@ import { StoreComponent } from './components/store/store.component';
                StoreSelectionComponent,
                ManagerEditComponent,
                StoreEditComponent,
-               StoreComponent
+               StoreComponent,
+               ItemCardComponent,
+               ItemCardDetailComponent
              ],
              imports: [
                BrowserModule,
@@ -87,7 +92,7 @@ import { StoreComponent } from './components/store/store.component';
                MatSidenavModule,
                MatListModule,
                AngularFireModule.initializeApp( environment.firebaseConfig ),
-               FormsModule, MatDialogModule
+               FormsModule, MatDialogModule, MatTooltipModule
              ],
              providers: [],
              bootstrap: [ AppComponent ]

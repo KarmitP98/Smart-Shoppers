@@ -24,7 +24,7 @@ export class SignUpComponent implements OnInit {
       uId: 'temp',
       uEmail: this.uEmail,
       uName: this.uName,
-      uProPic: 'empty',
+      uProPic: this.uType === 'customer' ? 'assets/images/customer-pro.png' : this.uType === 'manager' ? 'assets/images/manager-pro.png' : 'assets/images/admin-pro.png',
       uType: this.uType
     };
 

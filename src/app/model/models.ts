@@ -6,9 +6,9 @@ export class UserModel {
   uType: string;
   uLevel?: number;
   preferedStore?: string;
-  currentShoppingCart?: ShoppingList;
   orders?: OrderModel[];
-  shoppingCarts?: ShoppingList[];
+  currentShoppingList?: ShoppingList;
+  shoppingLists?: ShoppingList[];
   searches?: string[];
   mStoreIds?: string[];
 }
@@ -32,11 +32,17 @@ export class ItemModel {
   iStatus: string;
   iStoreQuantity: number;
   onSale: boolean;
-  iBought: boolean;
   price: number;
   isle: number;
-  iQ?: number;
   oldPrice?: number;
+}
+
+export class ListItem {
+  item: ItemModel;
+  iQuantity: number;
+  iBought: boolean;
+  iStoreId: string;
+  iStoreName: string;
 }
 
 export class ItemDetailModel {
@@ -50,7 +56,7 @@ export class ItemDetailModel {
 
 export class ShoppingList {
   sId: string;
-  sItems: ItemModel[];
+  sItems: ListItem[];
   sStatus: string;
 }
 

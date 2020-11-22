@@ -151,12 +151,11 @@ export class AdminComponent implements OnInit {
     for ( let i = 0; i < 50; i++ ) {
       const itemDetail = this.createItemDetail( i );
       this.itemService.addItem( itemDetail );
-      const item = this.createItemModel( itemDetail );
+      // tslint:disable-next-line:prefer-const
 
       for ( const store of stores ) {
-        if ( Math.random() > 0.2 ) {
-          item.price = itemDetail.iPrice * store.sPriceMult;
-          store.sItems.push( item );
+        if ( Math.random() > 0.4 ) {
+          store.sItems.push( this.createItemModel( itemDetail, store.sPriceMult ) );
         }
       }
     }
@@ -183,27 +182,26 @@ export class AdminComponent implements OnInit {
   }
 
   createItemDetail( i ): ItemDetailModel {
+    const cat = this.categories[Math.floor( Math.random() * 8 )];
     return {
       iId: 't',
       iName: 'Item' + i,
-      iCategory: this.categories[Math.floor( Math.random() * 8 )],
-      iIcon: 'https://lallahoriye.com.tirzee.com/wp-content/uploads/2019/04/Product_Lg_Type.jpg',
+      iCategory: cat,
+      iIcon: 'assets/images/product-' + cat + '.png',
       iDesc: 'Item ' + i + ' is an item',
-      iPrice: Math.floor( Math.random() * 50 )
+      iPrice: Math.floor( (Math.random() * 50) + 1 )
     };
   }
 
-  createItemModel( itemDetail ): ItemModel {
+  createItemModel( itemDetail, sPriceMult: number ): ItemModel {
     return {
       itemDetail,
-      iBought: false,
       isle: Math.floor( (Math.random() * 100) + 1 ),
       iStatus: 'stock',
       iStoreQuantity: 10,
-      iQ: 0,
       oldPrice: 0,
       onSale: false,
-      price: itemDetail.iPrice
+      price: itemDetail.iPrice * sPriceMult
     };
   }
 }

@@ -92,13 +92,13 @@ export class UserService {
   }
 
   public updateUser( newUser: UserModel ): void {
-    this.afs.collection( 'users' )
+    this.afs.collection<UserModel>( 'users' )
         .doc( newUser.uId )
         .update( newUser );
   }
 
   public removeUser( user: UserModel ): void {
-    this.afs.collection( 'users' )
+    this.afs.collection<UserModel>( 'users' )
         .doc( user.uId )
         .delete();
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { StoreModel, UserModel } from '../../../model/models';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +6,7 @@ import { StoreSelectionComponent } from '../../store-selection/store-selection.c
 import { StoreService } from '../../../services/store.service';
 import { Subscription } from 'rxjs';
 import { ItemService } from '../../../services/item.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component( {
               selector: 'app-customer',
@@ -14,19 +15,49 @@ import { ItemService } from '../../../services/item.service';
             } )
 export class CustomerComponent implements OnInit, OnDestroy {
 
-  @Input( 'user' ) user: UserModel;
   itemName: string;
   store: StoreModel;
   storeSub: Subscription;
+  user: UserModel;
+  userSub: Subscription;
 
   constructor( public userService: UserService,
                public storeService: StoreService,
                public dialog: MatDialog,
-               private itemService: ItemService ) { }
+               private itemService: ItemService,
+               private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
-    this.fetchStore();
 
+    const uId = this.route.snapshot.parent.params.uId;
+
+    this.userSub = this.userService.fetchUser( 'uId', '==', uId )
+                       .valueChanges()
+                       .subscribe( value => {
+                         if ( value?.length > 0 ) {
+                           this.user = value[0];
+                           this.fetchStore();
+                         }
+                       } );
+  }
+
+  ngOnDestroy(): void {
+    if ( this.storeSub ) {
+      this.storeSub.unsubscribe();
+    }
+    this.userSub.unsubscribe();
+  }
+
+  private fetchStore(): void {
+    if ( this.user.preferedStore ) {
+      this.storeSub = this.storeService.fetchStore( 'sId', '==', this.user.preferedStore )
+                          .valueChanges()
+                          .subscribe( value => {
+                            if ( value?.length > 0 ) {
+                              this.store = value[0];
+                            }
+                          } );
+    }
   }
 
   selectStore(): any {
@@ -45,11 +76,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
     } );
   }
 
-  ngOnDestroy(): void {
-    if ( this.storeSub ) {
-      this.storeSub.unsubscribe();
-    }
-  }
 
   logOut(): void {
     this.userService.logOut();
@@ -59,15 +85,5 @@ export class CustomerComponent implements OnInit, OnDestroy {
     return this.store;
   }
 
-  private fetchStore(): void {
-    if ( this.user.preferedStore ) {
-      this.storeSub = this.storeService.fetchStore( 'sId', '==', this.user.preferedStore )
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.store = value[0];
-                            }
-                          } );
-    }
-  }
+
 }

@@ -43,7 +43,8 @@ export class AuthGuard implements CanActivate, CanDeactivate<any>, CanActivateCh
       const sub = this.afa.authState
                       .subscribe( ( value ) => {
                         if ( value ) {
-                          resolve( this.router.navigate( [ '/', value.uid ] ) );
+                          // resolve( this.router.navigate( [ '/', value.uid ] ) );
+                          resolve( false );
                         } else {
                           resolve( true );
                         }

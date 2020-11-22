@@ -3,28 +3,31 @@
   <mat-toolbar-row>
     <img alt = 'Company Logo'
          class = 'company-logo-toolbar'
-         routerLink = 'home'
+         routerLink = 'store'
          src = 'assets/logo/shoppers-logo-black.jpg'>
     &nbsp;
-    <button (click) = 'selectStore()' mat-button>
-      {{user.preferedStore ? store?.sName : "Select Store"}}
+    <button color = 'primary' mat-button
+            routerLink = 'store'>Store
     </button>
     &nbsp;
-    <button color = 'primary' mat-button>Shopping List</button>
+    <button color = 'primary' mat-button
+            routerLink = 'shopping-list'>Shopping List
+    </button>
 
     <span class = 'spacer'></span>
-
+    <button (click) = 'selectStore()' mat-button>
+      {{user?.preferedStore ? store?.sName : "Select Store"}}
+    </button>
+    &nbsp;
     <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <div class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
-  <div *ngIf = 'user?.preferedStore'>
-    <app-store *ngIf = 'store' [store] = 'this.getStore()'></app-store>
-  </div>
-
-  <div *ngIf = '!user?.preferedStore' style = 'margin-top: 40vh; cursor: pointer'>
-    <a (click) = 'selectStore()'>Pick a prefferd store!</a>
-  </div>
-
+  <!--  <app-store *ngIf = 'store' [store] = 'this.getStore()' [user]='user'></app-store>-->
+  <router-outlet></router-outlet>
 </div>
+
+
+
+
