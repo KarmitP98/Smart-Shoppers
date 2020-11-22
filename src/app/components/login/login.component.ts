@@ -20,7 +20,8 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithEmail(): void {
-    this.userService.loginWithEmailandPassword( this.uEmail, this.uPassword, this.userLevel );
+    this.userService.loginWithEmailandPassword( this.uEmail, this.uPassword,
+                                                this.userLevel );
   }
 
 

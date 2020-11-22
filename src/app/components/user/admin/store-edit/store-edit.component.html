@@ -51,7 +51,7 @@
       <mat-card-content class = 'text-left'>
         <mat-form-field appearance = 'outline' class = 'w-25'>
           <mat-label>Store Manager</mat-label>
-          <mat-select (ngModelChange) = 'changeStoreManager(store)'
+          <mat-select (selectionChange) = 'changeStoreManager(store)'
                       [(ngModel)] = 'store.sManagerId'
                       name = 'manager'
                       placeholder = 'Select a store manager'>

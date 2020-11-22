@@ -45,6 +45,8 @@ import { StoreComponent } from './components/store/store.component';
 import { ItemCardComponent } from './components/item-card/item-card.component';
 import { ItemCardDetailComponent } from './components/item-card/item-card-detail/item-card-detail.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { StoresComponent } from './components/user/manager/stores/stores.component';
+import { EditStoreComponent } from './components/user/manager/edit-store/edit-store.component';
 
 @NgModule( {
              declarations: [
@@ -63,7 +65,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                StoreEditComponent,
                StoreComponent,
                ItemCardComponent,
-               ItemCardDetailComponent
+               ItemCardDetailComponent,
+               StoresComponent,
+               EditStoreComponent
              ],
              imports: [
                BrowserModule,

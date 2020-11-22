@@ -37,7 +37,8 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
                         .valueChanges()
                         .subscribe( value => {
                           if ( value?.length > 0 ) {
-                            this.allStores = value.sort( a => a.sId === this.data.preferedStore ? -1 : 1 );
+                            this.allStores = value.sort(
+                              a => a.sId === this.data.preferedStore ? -1 : 1 );
                             this.stores = this.allStores;
                           }
                         } );
@@ -56,16 +57,24 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
     // this.stores = this.stores.filter(store => store)
     switch ( type ) {
       case 1:
-        this.stores = this.allStores.filter( store => store.sCountry.toUpperCase().includes( this.country.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sCountry.toUpperCase().includes(
+            this.country.toUpperCase() ) );
         break;
       case 2:
-        this.stores = this.allStores.filter( store => store.sProvince.toUpperCase().includes( this.province.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sProvince.toUpperCase().includes(
+            this.province.toUpperCase() ) );
         break;
       case 3:
-        this.stores = this.allStores.filter( store => store.sCity.toUpperCase().includes( this.city.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sCity.toUpperCase().includes(
+            this.city.toUpperCase() ) );
         break;
       case 4:
-        this.stores = this.allStores.filter( store => store.sPostalCode.toUpperCase().includes( this.postalCode.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sPostalCode.toUpperCase().includes(
+            this.postalCode.toUpperCase() ) );
         break;
     }
 

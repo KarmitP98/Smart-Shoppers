@@ -5,7 +5,13 @@
          style = 'width: 100%; height: available'>
   </mat-grid-tile>
   <mat-grid-tile>
-
+    <mat-card class = 'mat-elevation-z0'>
+      <mat-card-header>
+        <mat-card-title>
+          {{data.item.itemDetail.iName}}
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
     <h1>{{data.item.itemDetail.iName}}</h1>
     <br>
     <h3>{{data.item.itemDetail.iDesc}}</h3>

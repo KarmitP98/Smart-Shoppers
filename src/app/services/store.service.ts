@@ -11,7 +11,9 @@ export class StoreService {
 
   public fetchStore( child?, condition?, value? ) {
     if ( child ) {
-      return this.afs.collection<StoreModel>( 'stores', ref => ref.where( child, condition, value ) );
+      return this.afs.collection<StoreModel>( 'stores', ref => ref.where( child,
+                                                                          condition,
+                                                                          value ) );
     }
     return this.afs.collection<StoreModel>( 'stores' );
   }

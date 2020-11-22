@@ -14,7 +14,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 @Injectable( {
                providedIn: 'root'
              } )
-export class AuthGuard implements CanActivate, CanDeactivate<any>, CanActivateChild {
+export class AuthGuard implements CanActivate,
+                                  CanDeactivate<any>,
+                                  CanActivateChild {
 
   constructor( private afa: AngularFireAuth,
                private router: Router ) {}
@@ -43,7 +45,8 @@ export class AuthGuard implements CanActivate, CanDeactivate<any>, CanActivateCh
       const sub = this.afa.authState
                       .subscribe( ( value ) => {
                         if ( value ) {
-                          // resolve( this.router.navigate( [ '/', value.uid ] ) );
+                          // resolve( this.router.navigate( [ '/', value.uid ]
+                          // ) );
                           resolve( false );
                         } else {
                           resolve( true );

@@ -1,5 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemDetailModel, ItemModel, StoreModel, UserModel } from '../../../model/models';
+import {
+  ItemDetailModel,
+  ItemModel,
+  StoreModel,
+  UserModel
+} from '../../../model/models';
 import { UserService } from '../../../services/user.service';
 import { StoreService } from '../../../services/store.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -137,16 +142,31 @@ export class AdminComponent implements OnInit {
     //   sManagerId: ''
     // };
 
-    const store1 = this.createStore( '50 Quarry Edge Dr,Brampton,ON,L6V 4K2'.split( ',' ), 'Qarry' );
-    const store2 = this.createStore( '800 Matheson Blvd W,Mississauga,ON,L5V 2N6'.split( ',' ), 'Matheson' );
-    const store3 = this.createStore( '100 City Centre Dr,Mississauga,ON,L5B 2C9'.split( ',' ), 'City Centre' );
-    const store4 = this.createStore( '4515 Dundas St,Burlington,ON,L7M 5B4'.split( ',' ), 'Dundas' );
-    const store5 = this.createStore( '900 Dufferin St,Toronto,ON,M6H 4A9'.split( ',' ), 'Dufferin' );
-    const store6 = this.createStore( '2525 St Clair Ave W,Toronto,ON,M6N 4Z5'.split( ',' ), 'St Clair' );
-    const store7 = this.createStore( '5005 Northland Dr NW,Calgary,AB,T2L 2K1'.split( ',' ), 'NorthLand' );
-    const store8 = this.createStore( '9650 Macleod Trail,Calgary,AB,T2J 0P5'.split( ',' ), 'Macleod' );
+    const store1 = this.createStore(
+      '50 Quarry Edge Dr,Brampton,ON,L6V 4K2'.split( ',' ), 'Qarry' );
+    const store2 = this.createStore(
+      '800 Matheson Blvd W,Mississauga,ON,L5V 2N6'.split( ',' ), 'Matheson' );
+    const store3 = this.createStore(
+      '100 City Centre Dr,Mississauga,ON,L5B 2C9'.split( ',' ), 'City Centre' );
+    const store4 = this.createStore(
+      '4515 Dundas St,Burlington,ON,L7M 5B4'.split( ',' ), 'Dundas' );
+    const store5 = this.createStore(
+      '900 Dufferin St,Toronto,ON,M6H 4A9'.split( ',' ), 'Dufferin' );
+    const store6 = this.createStore(
+      '2525 St Clair Ave W,Toronto,ON,M6N 4Z5'.split( ',' ), 'St Clair' );
+    const store7 = this.createStore(
+      '5005 Northland Dr NW,Calgary,AB,T2L 2K1'.split( ',' ), 'NorthLand' );
+    const store8 = this.createStore(
+      '9650 Macleod Trail,Calgary,AB,T2J 0P5'.split( ',' ), 'Macleod' );
 
-    const stores: StoreModel[] = [ store1, store2, store3, store4, store5, store6, store7, store8 ];
+    const stores: StoreModel[] = [ store1,
+                                   store2,
+                                   store3,
+                                   store4,
+                                   store5,
+                                   store6,
+                                   store7,
+                                   store8 ];
 
     for ( let i = 0; i < 50; i++ ) {
       const itemDetail = this.createItemDetail( i );
@@ -155,7 +175,8 @@ export class AdminComponent implements OnInit {
 
       for ( const store of stores ) {
         if ( Math.random() > 0.4 ) {
-          store.sItems.push( this.createItemModel( itemDetail, store.sPriceMult ) );
+          store.sItems.push(
+            this.createItemModel( itemDetail, store.sPriceMult ) );
         }
       }
     }

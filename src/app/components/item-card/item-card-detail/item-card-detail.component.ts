@@ -1,6 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ItemModel, ListItem, StoreModel, UserModel } from '../../../model/models';
+import {
+  ItemModel,
+  ListItem,
+  StoreModel,
+  UserModel
+} from '../../../model/models';
 import { UserService } from '../../../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -13,7 +18,8 @@ export class ItemCardDetailComponent implements OnInit {
 
   quantity: number = 1;
 
-  constructor( @Inject( MAT_DIALOG_DATA ) public data: { item: ItemModel, user: UserModel, store: StoreModel },
+  constructor( @Inject(
+    MAT_DIALOG_DATA ) public data: { item: ItemModel, user: UserModel, store: StoreModel },
                private userService: UserService,
                private snackBar: MatSnackBar ) { }
 
@@ -33,7 +39,11 @@ export class ItemCardDetailComponent implements OnInit {
     let found: boolean = false;
 
     if ( !this.data.user.currentShoppingList ) {
-      this.data.user.currentShoppingList = { sId: 'current', sStatus: 'current', sItems: [ listItem ] };
+      this.data.user.currentShoppingList = {
+        sId: 'current',
+        sStatus: 'current',
+        sItems: [ listItem ]
+      };
     } else {
 
       for ( const sItem of this.data.user.currentShoppingList.sItems ) {
@@ -50,7 +60,9 @@ export class ItemCardDetailComponent implements OnInit {
     // console.log(this.data.user);
     this.userService.updateUser( this.data.user );
 
-    this.showToast( this.data.item.itemDetail.iName + ' has been added to the Shopping List!', 1000 );
+    this.showToast(
+      this.data.item.itemDetail.iName + ' has been added to the Shopping List!',
+      1000 );
 
   }
 

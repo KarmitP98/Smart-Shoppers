@@ -1,0 +1,39 @@
+<div *ngIf = 'user'>
+  <!--  <div *ngIf = '!store'>-->
+  <!--    <div class = 'text-center container' style = 'margin-top: 40vh; cursor: pointer'>-->
+  <!--      <a>Pick a store!</a>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <div *ngIf = 'store'>
+    <h1>Welcome to {{store.sName}}</h1>
+    <mat-form-field appearance = 'outline'>
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)] = 'category'>
+        <mat-option [value] = 'null'>All</mat-option>
+        <mat-option *ngFor = 'let cat of categories' [value] = 'cat'>{{cat | titlecase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance = 'outline' class = 'w-50'>
+
+      <mat-label>Search item...</mat-label>
+      <input (keypress) = '$event.key === "Enter" ? search(false): ""' (keyup) = 'search(false)'
+             [(ngModel)] = 'itemName'
+             matInput
+             placeholder = 'Item Name'>
+      <mat-icon (click) = 'search(false)' class = 'search-icon' matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <hr>
+
+    <div class = 'text-center'>
+
+      <mat-grid-list cols = '4' rowHeight = '1:1.5'>
+        <mat-grid-tile (click) = 'showItemDetail(item)' *ngFor = 'let item of search(false)' [@opacityUp]>
+          <app-item-card [item] = 'item' style = 'width: 95%;height: 95%;'></app-item-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+
+  </div>
+</div>

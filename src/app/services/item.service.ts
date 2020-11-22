@@ -11,7 +11,10 @@ export class ItemService {
 
   public fetchItems( child?, condition?, value? ): any {
     if ( child ) {
-      return this.afs.collection<ItemDetailModel>( 'items', ref => ref.where( child, condition, value ) );
+      return this.afs.collection<ItemDetailModel>( 'items',
+                                                   ref => ref.where( child,
+                                                                     condition,
+                                                                     value ) );
     }
     return this.afs.collection<ItemDetailModel>( 'items' );
   }

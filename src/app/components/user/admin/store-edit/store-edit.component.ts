@@ -58,16 +58,24 @@ export class StoreEditComponent implements OnInit, OnDestroy {
     // this.stores = this.stores.filter(store => store)
     switch ( type ) {
       case 1:
-        this.stores = this.allStores.filter( store => store.sCountry.toUpperCase().includes( this.country.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sCountry.toUpperCase().includes(
+            this.country.toUpperCase() ) );
         break;
       case 2:
-        this.stores = this.allStores.filter( store => store.sProvince.toUpperCase().includes( this.province.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sProvince.toUpperCase().includes(
+            this.province.toUpperCase() ) );
         break;
       case 3:
-        this.stores = this.allStores.filter( store => store.sCity.toUpperCase().includes( this.city.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sCity.toUpperCase().includes(
+            this.city.toUpperCase() ) );
         break;
       case 4:
-        this.stores = this.allStores.filter( store => store.sPostalCode.toUpperCase().includes( this.postalCode.toUpperCase() ) );
+        this.stores = this.allStores.filter(
+          store => store.sPostalCode.toUpperCase().includes(
+            this.postalCode.toUpperCase() ) );
         break;
     }
 
@@ -83,14 +91,23 @@ export class StoreEditComponent implements OnInit, OnDestroy {
 
     this.users.forEach( user => {
       if ( user.mStoreIds?.some( value => value === store.sId ) ) {
-        user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
+        console.log( 'Found Store' );
+        if ( user.uId !== store.sId ) {
+          console.log( 'Not Same ID' );
+          user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
+          this.userService.updateUser( user );
+        }
       }
+
       if ( user.uId === store.sManagerId ) {
+        console.log( 'Found User' );
         if ( !user.mStoreIds ) {
+          console.log( 'No Stores' );
           user.mStoreIds = [];
         }
         user.mStoreIds.push( store.sId );
         this.userService.updateUser( user );
+        console.log( 'Added Store Ids' );
       }
     } );
 

@@ -55,7 +55,11 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
   }
 
   private reset(): void {
-    this.user.currentShoppingList = { sStatus: 'current', sId: 'current', sItems: [] };
+    this.user.currentShoppingList = {
+      sStatus: 'current',
+      sId: 'current',
+      sItems: []
+    };
 
     this.userService.updateUser( this.user );
   }

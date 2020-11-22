@@ -86,7 +86,9 @@ export class UserService {
 
   public fetchUser( child?, condition?, value? ) {
     if ( child ) {
-      return this.afs.collection<UserModel>( 'users', ref => ref.where( child, condition, value ) );
+      return this.afs.collection<UserModel>( 'users',
+                                             ref => ref.where( child, condition,
+                                                               value ) );
     }
     return this.afs.collection<UserModel>( 'users' );
   }

@@ -1,21 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ItemModel, StoreModel, UserModel } from '../../model/models';
-import { StoreService } from '../../services/store.service';
+import { ItemModel, StoreModel, UserModel } from '../../../../model/models';
+import { CATEGORIES } from '../../../../shared/constants';
 import { Subscription } from 'rxjs';
-import { CATEGORIES } from '../../shared/constants';
+import { StoreService } from '../../../../services/store.service';
+import { UserService } from '../../../../services/user.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemCardDetailComponent } from '../item-card/item-card-detail/item-card-detail.component';
-import { opacityLoadTrigger, pushTrigger } from '../../shared/animations';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { ItemCardDetailComponent } from '../../../item-card/item-card-detail/item-card-detail.component';
+import { opacityLoadTrigger } from '../../../../shared/animations';
 
 @Component( {
-              selector: 'app-store',
-              templateUrl: './store.component.html',
-              styleUrls: [ './store.component.css' ],
-              animations: [ pushTrigger, opacityLoadTrigger ]
+              selector: 'app-edit-store',
+              templateUrl: './edit-store.component.html',
+              styleUrls: [ './edit-store.component.css' ],
+              animations: [ opacityLoadTrigger ]
             } )
-export class StoreComponent implements OnInit, OnDestroy {
+export class EditStoreComponent implements OnInit, OnDestroy {
 
   store: StoreModel;
   user: UserModel;
@@ -34,22 +34,31 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const uId = this.route.snapshot.parent.parent.params.uId;
+    const sId = this.route.snapshot.params.sId;
 
     this.userSub = this.userService.fetchUser( 'uId', '==', uId )
                        .valueChanges()
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
                            this.user = value[0];
-                           this.fetchStore();
                          }
                        } );
+
+    this.storeSub = this.storeService.fetchStore( 'sId', '==',
+                                                  sId )
+                        .valueChanges()
+                        .subscribe( value => {
+                          if ( value?.length > 0 ) {
+                            this.store = value[0];
+                            this.store.sItems = this.store.sItems.sort(
+                              ( a, b ) => a.isle < b.isle ? -1 : 1 );
+                          }
+                        } );
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    if ( this.storeSub ) {
-      this.storeSub.unsubscribe();
-    }
+    this.storeSub.unsubscribe();
   }
 
   search( sale: boolean ) {
@@ -89,18 +98,4 @@ export class StoreComponent implements OnInit, OnDestroy {
     } );
   }
 
-  private fetchStore(): void {
-    if ( this.user.preferedStore ) {
-      this.storeSub = this.storeService.fetchStore( 'sId', '==',
-                                                    this.user.preferedStore )
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.store = value[0];
-                              this.store.sItems = this.store.sItems.sort(
-                                ( a, b ) => a.isle < b.isle ? -1 : 1 );
-                            }
-                          } );
-    }
-  }
 }

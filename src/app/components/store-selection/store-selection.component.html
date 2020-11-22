@@ -1,19 +1,19 @@
 <mat-dialog-content class = 'text-center'>
   <mat-form-field appearance = 'outline'>
     <mat-label>Country</mat-label>
-    <input [(ngModel)] = 'country' matInput
+    <input (keypress) = 'keyPress($event, 1)' (keyup) = 'filter(1)'
+           [(ngModel)] = 'country'
+           matInput
            placeholder = 'Canada'
-           (keypress) = 'keyPress($event, 1)'
-           (keyup) = 'filter(1)'
            type = 'text'>
     <mat-icon (click) = 'filter(1)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
   ||
   <mat-form-field appearance = 'outline'>
     <mat-label>Province</mat-label>
-    <input [(ngModel)] = 'province' matInput
-           (keypress) = 'keyPress($event, 2)'
-           (keyup) = 'filter(2)'
+    <input (keypress) = 'keyPress($event, 2)' (keyup) = 'filter(2)'
+           [(ngModel)] = 'province'
+           matInput
            placeholder = 'ON'
            type = 'text'>
     <mat-icon (click) = 'filter(2)' class = 'search-icon' matSuffix>search</mat-icon>
@@ -21,20 +21,20 @@
   ||
   <mat-form-field appearance = 'outline'>
     <mat-label>City</mat-label>
-    <input [(ngModel)] = 'city' matInput
+    <input (keypress) = 'keyPress($event, 3)' (keyup) = 'filter(3)'
+           [(ngModel)] = 'city'
+           matInput
            placeholder = 'Toronto'
-           (keypress) = 'keyPress($event, 3)'
-           (keyup) = 'filter(3)'
            type = 'text'>
     <mat-icon (click) = 'filter(3)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>
   ||
   <mat-form-field appearance = 'outline'>
     <mat-label>Postal Code</mat-label>
-    <input [(ngModel)] = 'postalCode' matInput
+    <input (keypress) = 'keyPress($event, 4)' (keyup) = 'filter(4)'
+           [(ngModel)] = 'postalCode'
+           matInput
            placeholder = 'A1A1A1'
-           (keypress) = 'keyPress($event, 4)'
-           (keyup) = 'filter(4)'
            type = 'text'>
     <mat-icon (click) = 'filter(4)' class = 'search-icon' matSuffix>search</mat-icon>
   </mat-form-field>

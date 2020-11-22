@@ -48,18 +48,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
-  private fetchStore(): void {
-    if ( this.user.preferedStore ) {
-      this.storeSub = this.storeService.fetchStore( 'sId', '==', this.user.preferedStore )
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.store = value[0];
-                            }
-                          } );
-    }
-  }
-
   selectStore(): any {
     const dialogRef = this.dialog.open( StoreSelectionComponent, {
       data: this.user,
@@ -76,13 +64,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
     } );
   }
 
-
   logOut(): void {
     this.userService.logOut();
   }
 
   getStore() {
     return this.store;
+  }
+
+  private fetchStore(): void {
+    if ( this.user.preferedStore ) {
+      this.storeSub = this.storeService.fetchStore( 'sId', '==',
+                                                    this.user.preferedStore )
+                          .valueChanges()
+                          .subscribe( value => {
+                            if ( value?.length > 0 ) {
+                              this.store = value[0];
+                            }
+                          } );
+    }
   }
 
 

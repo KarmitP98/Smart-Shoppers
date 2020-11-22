@@ -16,7 +16,7 @@
 
     <span class = 'spacer'></span>
     <button (click) = 'selectStore()' mat-button>
-      {{user?.preferedStore ? store?.sName : "Select Store"}}
+      {{user?.preferedStore ? "Change Store" : "Select Store"}}
     </button>
     &nbsp;
     <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>

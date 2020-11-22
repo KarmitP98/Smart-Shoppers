@@ -2,15 +2,18 @@
   <mat-toolbar-row>
     <img alt = 'Company Logo'
          class = 'company-logo-toolbar'
-         routerLink = 'home'
+         routerLink = 'stores'
          src = 'assets/logo/shoppers-logo-black.jpg'>
     &nbsp;
-    <!--    <button (click) = 'selectStore()' color = 'primary'-->
-    <!--            mat-button>Stores-->
-    <!--    </button>-->
+    <button mat-button routerLink = 'stores'>Stores</button>
+    &nbsp;
     <span class = 'spacer'></span>
     <button (click) = 'this.userService.logOut()'
             color = 'warn' mat-raised-button>Log Out
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
+<br>
+<div class = 'w-75 text-center' style = 'margin-left: 12.5vw;'>
+  <router-outlet></router-outlet>
+</div>
