@@ -40,8 +40,8 @@ export class ItemCardDetailComponent implements OnInit {
 
     if ( !this.data.user.currentShoppingList ) {
       this.data.user.currentShoppingList = {
-        sId: 'current',
-        sStatus: 'current',
+        sId: this.data.user.preferedStore,
+        sStatus: 'pending',
         sItems: [ listItem ]
       };
     } else {

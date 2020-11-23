@@ -27,9 +27,8 @@ const routes: Routes = [
     children: [
       {
         path: 'customer', component: CustomerComponent, children: [
-          { path: '', redirectTo: 'store', pathMatch: 'full' },
-          { path: 'store', component: StoreComponent },
-          { path: 'shopping-list', component: ShoppinpListViewComponent }
+          { path: 'shopping-list', component: ShoppinpListViewComponent },
+          { path: ':sId', component: StoreComponent }
         ]
       },
       {

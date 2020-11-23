@@ -6,7 +6,7 @@ import { StoreSelectionComponent } from '../../store-selection/store-selection.c
 import { StoreService } from '../../../services/store.service';
 import { Subscription } from 'rxjs';
 import { ItemService } from '../../../services/item.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component( {
               selector: 'app-customer',
@@ -20,25 +20,36 @@ export class CustomerComponent implements OnInit, OnDestroy {
   storeSub: Subscription;
   user: UserModel;
   userSub: Subscription;
+  loading: boolean = false;
 
   constructor( public userService: UserService,
                public storeService: StoreService,
                public dialog: MatDialog,
                private itemService: ItemService,
-               private route: ActivatedRoute ) { }
+               private route: ActivatedRoute,
+               private router: Router ) { }
 
   ngOnInit(): void {
 
     const uId = this.route.snapshot.parent.params.uId;
-
     this.userSub = this.userService.fetchUser( 'uId', '==', uId )
                        .valueChanges()
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
                            this.user = value[0];
-                           this.fetchStore();
                          }
                        } );
+
+    this.loading = true;
+    setTimeout( () => {
+                  if ( this.user ) {
+                    this.loading = false;
+                    this.router.navigate( [ this.user.preferedStore ],
+                                          { relativeTo: this.route } );
+                  }
+                },
+                1000 );
+
   }
 
   ngOnDestroy(): void {
@@ -57,9 +68,16 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe( result => {
       if ( result ) {
-        this.user.preferedStore = result;
-        this.userService.updateUser( this.user );
-        this.fetchStore();
+        this.loading = true;
+        this.updateUserShoppingList( result );
+        setTimeout( () => {
+                      if ( this.user ) {
+                        this.loading = false;
+                        this.router.navigate( [ this.user.preferedStore ],
+                                              { relativeTo: this.route } );
+                      }
+                    },
+                    500 );
       }
     } );
   }
@@ -86,4 +104,37 @@ export class CustomerComponent implements OnInit, OnDestroy {
   }
 
 
+  private updateUserShoppingList( result: string ): void {
+    let found = false;
+    for ( let sl of this.user.shoppingLists ) {
+      if ( sl.sId === this.user.preferedStore && sl.sStatus === 'pending' ) {
+        sl = this.user.currentShoppingList;
+        found = true;
+      }
+    }
+
+    if ( !found ) {
+      this.user.shoppingLists.push( this.user.currentShoppingList );
+    }
+
+    this.userService.updateUser( this.user );
+
+    this.user.preferedStore = result;
+    this.user.currentShoppingList = {
+      sId: result,
+      sStatus: 'pending',
+      sItems: []
+    };
+    found = false;
+
+    for ( let sl of this.user.shoppingLists ) {
+      if ( sl.sStatus === 'pending' && sl.sId === result ) {
+        this.user.currentShoppingList = sl;
+        found = true;
+      }
+    }
+
+    this.userService.updateUser( this.user );
+
+  }
 }

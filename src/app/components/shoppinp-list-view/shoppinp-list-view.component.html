@@ -47,7 +47,7 @@
   <h2>Previous Shopping Lists</h2>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor = 'let list of this.user.shoppingLists' class = 'text-left'>
+    <mat-expansion-panel *ngFor = 'let list of getCurrentShoppingList()' class = 'text-left'>
       <mat-expansion-panel-header>
         <mat-panel-title>{{list.sId}}</mat-panel-title>
         <mat-panel-description>

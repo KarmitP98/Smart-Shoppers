@@ -65,3 +65,9 @@ export class OrderModel {
   cId: string;
   oItems: ItemModel[];
 }
+
+export class CustomerStoreModel {
+  sId: string;
+  currentShoppingList: ShoppingList;
+  shoppingLists: ShoppingList[];
+}

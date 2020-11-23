@@ -47,6 +47,7 @@ import { ItemCardDetailComponent } from './components/item-card/item-card-detail
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StoresComponent } from './components/user/manager/stores/stores.component';
 import { EditStoreComponent } from './components/user/manager/edit-store/edit-store.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule( {
              declarations: [
@@ -95,6 +96,7 @@ import { EditStoreComponent } from './components/user/manager/edit-store/edit-st
                MatButtonToggleModule,
                MatSidenavModule,
                MatListModule,
+               MatProgressBarModule,
                AngularFireModule.initializeApp( environment.firebaseConfig ),
                FormsModule, MatDialogModule, MatTooltipModule
              ],

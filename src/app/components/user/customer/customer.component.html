@@ -3,11 +3,11 @@
   <mat-toolbar-row>
     <img alt = 'Company Logo'
          class = 'company-logo-toolbar'
-         routerLink = 'store'
+         [routerLink] = 'this.user?.preferedStore'
          src = 'assets/logo/shoppers-logo-black.jpg'>
     &nbsp;
     <button color = 'primary' mat-button
-            routerLink = 'store'>Store
+            [routerLink] = 'this.user?.preferedStore'>Home
     </button>
     &nbsp;
     <button color = 'primary' mat-button
@@ -23,7 +23,9 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
+<mat-progress-bar *ngIf = 'this.loading' mode = 'buffer'></mat-progress-bar>
+
+<div *ngIf = '!this.loading' class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
   <!--  <app-store *ngIf = 'store' [store] = 'this.getStore()' [user]='user'></app-store>-->
   <router-outlet></router-outlet>
 </div>
