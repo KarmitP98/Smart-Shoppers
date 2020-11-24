@@ -40,24 +40,36 @@
   </mat-form-field>
   <hr>
   <div class = 'text-center'>
+
     <mat-card *ngFor = 'let store of stores' class = 'mat-elevation-z4' style = 'margin-bottom: 8px;'>
       <mat-card-header>
         <div matCardAvatar>
-          <mat-icon [color] = 'store.sManagerId?.length > 0 ? "accent" : "warn"'>storefront</mat-icon>
+          <mat-icon [color] = 'store.status ? "accent":"warn"'>storefront</mat-icon>
         </div>
         <mat-card-title>{{store.sName}}</mat-card-title>
         <mat-card-subtitle>{{store.sStreet + ", " + store.sCity + ", " + store.sProvince + ", " + store.sPostalCode}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class = 'text-left'>
+
         <mat-form-field appearance = 'outline' class = 'w-25'>
           <mat-label>Store Manager</mat-label>
-          <mat-select (selectionChange) = 'changeStoreManager(store)'
-                      [(ngModel)] = 'store.sManagerId'
+          <mat-select (selectionChange) = 'addStoreManager(store)'
+                      [(ngModel)] = 'managerId'
                       name = 'manager'
-                      placeholder = 'Select a store manager'>
+                      placeholder = 'Add a store manager'>
+            <mat-option [value] = '""'>Choose a Manager</mat-option>
             <mat-option *ngFor = 'let user of users' [value] = 'user.uId'>{{user.uName}}</mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-chip-list #chipList aria-label = 'Manager selection'>
+          <mat-chip (removed) = 'removeManager(manager, store)'
+                    *ngFor = 'let manager of store.sManagerIds'
+                    [removable] = 'store.sManagerIds.length > 1'
+                    [selectable] = 'true'>
+            {{getManagerName(manager)}}
+            <mat-icon *ngIf = 'store.sManagerIds.length > 1' matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
       </mat-card-content>
     </mat-card>
   </div>

@@ -40,15 +40,15 @@
   </mat-form-field>
 
   <hr>
-
   <mat-card (click) = 'selectStore(store)'
             *ngFor = 'let store of stores'
-            [matBadge] = 'isSelected(store) ? "#" : ""' class = 'mat-elevation-z4 text-left store-card w-75'
+            [matBadge] = 'isSelected(store) ? "#" : ""'
+            class = 'mat-elevation-z4 text-left store-card w-75'
             matBadgeColor = 'warn'
-            style = 'margin-bottom: 8px;'>
+            style = 'margin-bottom: 8px;margin-left: 12.5%;'>
     <mat-card-header>
       <div mat-card-avatar>
-        <mat-icon [color] = 'isSelected(store) ? "accent" : "warn"'>storefront</mat-icon>
+        <mat-icon [color] = 'store.status ? "accent" : "warn"'>storefront</mat-icon>
       </div>
       <mat-card-title>{{store.sName}}</mat-card-title>
       <mat-card-subtitle>{{store.sStreet}}</mat-card-subtitle>

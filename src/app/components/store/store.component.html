@@ -1,10 +1,5 @@
 <br>
 <div *ngIf = 'user'>
-  <div *ngIf = '!store'>
-    <div class = 'text-center container' style = 'margin-top: 40vh; cursor: pointer'>
-      <a>Pick a store!</a>
-    </div>
-  </div>
 
   <div *ngIf = 'store'>
     <h1>Welcome to {{store.sName}}</h1>

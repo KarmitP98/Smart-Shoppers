@@ -87,31 +87,68 @@ export class StoreEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeStoreManager( store: StoreModel ): void {
+  // changeStoreManager( store: StoreModel ): void {
+  //
+  //   this.users.forEach( user => {
+  //     if ( user.mStoreIds?.some( value => value === store.sId ) ) {
+  //       console.log( 'Found Store' );
+  //       if ( user.uId !== store.sId ) {
+  //         console.log( 'Not Same ID' );
+  //         user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
+  //         this.userService.updateUser( user );
+  //       }
+  //     }
+  //
+  //     if ( user.uId === store.sManagerId ) {
+  //       console.log( 'Found User' );
+  //       if ( !user.mStoreIds ) {
+  //         console.log( 'No Stores' );
+  //         user.mStoreIds = [];
+  //       }
+  //       user.mStoreIds.push( store.sId );
+  //       this.userService.updateUser( user );
+  //       console.log( 'Added Store Ids' );
+  //     }
+  //   } );
+  //
+  //   this.storeService.updateStore( store );
+  // }
+  managerId: string;
 
-    this.users.forEach( user => {
-      if ( user.mStoreIds?.some( value => value === store.sId ) ) {
-        console.log( 'Found Store' );
-        if ( user.uId !== store.sId ) {
-          console.log( 'Not Same ID' );
-          user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
-          this.userService.updateUser( user );
-        }
-      }
-
-      if ( user.uId === store.sManagerId ) {
-        console.log( 'Found User' );
-        if ( !user.mStoreIds ) {
-          console.log( 'No Stores' );
-          user.mStoreIds = [];
-        }
-        user.mStoreIds.push( store.sId );
-        this.userService.updateUser( user );
-        console.log( 'Added Store Ids' );
-      }
-    } );
-
-    this.storeService.updateStore( store );
+  getManagerName( manager: string ): any {
+    return this.users.filter( value => value.uId === manager )[0].uName;
   }
 
+  removeManager( manager: string, store: StoreModel ): void {
+    store.sManagerIds.splice( store.sManagerIds.indexOf( manager ), 1 );
+    this.storeService.updateStore( store );
+
+    this.users.filter( value => value.uId === manager )[0].mStoreIds.splice(
+      this.users.filter( value => value.uId === manager )[0].mStoreIds.indexOf(
+        store.sId ), 1 );
+    this.userService.updateUser(
+      this.users.filter( value => value.uId === manager )[0] );
+
+  }
+
+  addStoreManager( store: StoreModel ): void {
+    if ( !store.sManagerIds.some( value => value === this.managerId ) ) {
+      store.sManagerIds.push( this.managerId );
+      if ( !store.status ) {
+        store.status = true;
+      }
+      this.storeService.updateStore( store );
+
+      const temp = this.users.filter(
+        value => value.uId === this.managerId )[0];
+
+      if ( !temp.mStoreIds ) {
+        temp.mStoreIds = [];
+      }
+
+      temp.mStoreIds.push( store.sId );
+      this.userService.updateUser( temp );
+      this.managerId = '';
+    }
+  }
 }

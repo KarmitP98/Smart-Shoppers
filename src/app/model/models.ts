@@ -1,3 +1,6 @@
+import firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
+
 export class UserModel {
   uId: string;
   uName: string;
@@ -6,7 +9,6 @@ export class UserModel {
   uType: string;
   uLevel?: number;
   preferedStore?: string;
-  orders?: OrderModel[];
   currentShoppingList?: ShoppingList;
   shoppingLists?: ShoppingList[];
   searches?: string[];
@@ -24,7 +26,8 @@ export class StoreModel {
   sCountry: string;
   sPriceMult: number;
   sItems: ItemModel[];
-  sManagerId?: string;
+  sManagerIds: string[];
+  status: boolean;
 }
 
 export class ItemModel {
@@ -34,13 +37,14 @@ export class ItemModel {
   onSale: boolean;
   price: number;
   isle: number;
+  iBought: number;
   oldPrice?: number;
 }
 
 export class ListItem {
   item: ItemModel;
   iQuantity: number;
-  iBought: boolean;
+  iSize: number;
   iStoreId: string;
   iStoreName: string;
 }
@@ -51,23 +55,25 @@ export class ItemDetailModel {
   iDesc: string;
   iIcon: string;
   iCategory: string;
-  iPrice?: number;
+  iPrice: number;
 }
 
 export class ShoppingList {
   sId: string;
   sItems: ListItem[];
   sStatus: string;
+  lName: string;
+  date: Timestamp;
 }
 
-export class OrderModel {
-  oId: string;
-  cId: string;
-  oItems: ItemModel[];
-}
-
-export class CustomerStoreModel {
-  sId: string;
-  currentShoppingList: ShoppingList;
-  shoppingLists: ShoppingList[];
-}
+// export class OrderModel {
+//   oId: string;
+//   cId: string;
+//   oItems: ItemModel[];
+// }
+//
+// export class CustomerStoreModel {
+//   sId: string;
+//   currentShoppingList: ShoppingList;
+//   shoppingLists: ShoppingList[];
+// }

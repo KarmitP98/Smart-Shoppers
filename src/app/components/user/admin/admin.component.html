@@ -4,7 +4,7 @@
          class = 'company-logo-toolbar'
          routerLink = 'home'
          src = 'assets/logo/shoppers-logo-black.jpg'>
-    <button (click) = 'setup()' disabled mat-button>Setup Defaults</button>
+    <button (click) = 'setup()' [disabled] = 'stores' mat-button>Setup Defaults</button>
     &nbsp;
     <button mat-button routerLink = 'manager-edit'>Managers</button>
     &nbsp;

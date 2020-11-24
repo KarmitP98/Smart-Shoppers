@@ -8,6 +8,8 @@ import {
 } from '../../../model/models';
 import { UserService } from '../../../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
 
 @Component( {
               selector: 'app-item-card-detail',
@@ -17,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ItemCardDetailComponent implements OnInit {
 
   quantity: number = 1;
+  size: number = 1;
 
   constructor( @Inject(
     MAT_DIALOG_DATA ) public data: { item: ItemModel, user: UserModel, store: StoreModel },
@@ -31,9 +34,9 @@ export class ItemCardDetailComponent implements OnInit {
     const listItem: ListItem = {
       item: this.data.item,
       iQuantity: this.quantity,
-      iBought: false,
       iStoreId: this.data.store.sId,
-      iStoreName: this.data.store.sName
+      iStoreName: this.data.store.sName,
+      iSize: this.size
     };
 
     let found: boolean = false;
@@ -42,7 +45,10 @@ export class ItemCardDetailComponent implements OnInit {
       this.data.user.currentShoppingList = {
         sId: this.data.user.preferedStore,
         sStatus: 'pending',
-        sItems: [ listItem ]
+        sItems: [ listItem ],
+        lName: this.getStoreName() + ' - ' + Timestamp.now().toDate()
+                                                      .toDateString(),
+        date: Timestamp.now()
       };
     } else {
 
@@ -57,7 +63,6 @@ export class ItemCardDetailComponent implements OnInit {
         this.data.user.currentShoppingList.sItems.push( listItem );
       }
     }
-    // console.log(this.data.user);
     this.userService.updateUser( this.data.user );
 
     this.showToast(
@@ -77,4 +82,7 @@ export class ItemCardDetailComponent implements OnInit {
                         } );
   }
 
+  private getStoreName(): any {
+    return this.data.store.sName;
+  }
 }

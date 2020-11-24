@@ -1,27 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {
-  ItemDetailModel,
-  ItemModel,
-  StoreModel,
-  UserModel
-} from '../../../model/models';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ItemDetailModel, ItemModel, StoreModel } from '../../../model/models';
 import { UserService } from '../../../services/user.service';
 import { StoreService } from '../../../services/store.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CATEGORIES } from '../../../shared/constants';
 import { ItemService } from '../../../services/item.service';
+import { Subscription } from 'rxjs';
 
 @Component( {
               selector: 'app-admin',
               templateUrl: './admin.component.html',
               styleUrls: [ './admin.component.css' ]
             } )
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
 
 
   categories = CATEGORIES;
   // tslint:disable-next-line:no-input-rename
-  @Input( 'user' ) user: UserModel;
+  storeSub: Subscription;
+  stores: StoreModel[] = [];
 
   constructor( public userService: UserService,
                public storeService: StoreService,
@@ -29,6 +26,17 @@ export class AdminComponent implements OnInit {
                public itemService: ItemService ) { }
 
   ngOnInit(): void {
+    this.storeSub = this.storeService.fetchStore()
+                        .valueChanges()
+                        .subscribe( value => {
+                          if ( value?.length > 0 ) {
+                            this.stores = value;
+                          }
+                        } );
+  }
+
+  ngOnDestroy(): void {
+    this.storeSub.unsubscribe();
   }
 
   selectStore(): void {
@@ -36,111 +44,6 @@ export class AdminComponent implements OnInit {
   }
 
   setup(): void {
-
-    // const store1: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Toronto',
-    //   sStreet: '453 Parliament St.',
-    //   sName: 'ShoppersLand Parliament',
-    //   sAreaCode: 'M5A',
-    //   sPostalCode: 'M5A3A3',
-    //   sPriceMult: 1.12,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store2: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Toronto',
-    //   sStreet: '609 Church St.',
-    //   sName: 'ShoppersLand Penguin',
-    //   sAreaCode: 'M4Y',
-    //   sPostalCode: 'M4Y2E6',
-    //   sPriceMult: 0.89,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store3: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Toronto',
-    //   sStreet: '25 Carlton St #21',
-    //   sName: 'ShoppersLand Carlton',
-    //   sAreaCode: 'M5A',
-    //   sPostalCode: 'M5A1L3',
-    //   sPriceMult: 1.25,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store4: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Brampton',
-    //   sStreet: '50 Quarry Edge Dr. ',
-    //   sName: 'ShoppersLand Quarry',
-    //   sAreaCode: 'L6V',
-    //   sPostalCode: 'L6V4K2',
-    //   sPriceMult: 0.9,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store5: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Mississauga',
-    //   sStreet: '800 Matheson Blvd W',
-    //   sName: 'ShoppersLand Carlton',
-    //   sAreaCode: 'L5V',
-    //   sPostalCode: 'L5V2N6',
-    //   sPriceMult: 0.7,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store6: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Mississauga',
-    //   sStreet: '2480 Carlton Blvd.',
-    //   sName: 'ShoppersLand Carlton',
-    //   sAreaCode: 'L5N',
-    //   sPostalCode: 'L5N7Y1',
-    //   sPriceMult: 1.30,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store7: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'ON',
-    //   sCity: 'Mississauga',
-    //   sStreet: '100 City Centre Dr.',
-    //   sName: 'ShoppersLand City Center',
-    //   sAreaCode: 'L5B',
-    //   sPostalCode: 'L5B2C9',
-    //   sPriceMult: 1.45,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
-    // const store8: StoreModel = {
-    //   sId: '',
-    //   sCountry: 'Canada',
-    //   sProvince: 'AB',
-    //   sCity: 'Calgary',
-    //   sStreet: '5005 Northland Dr NW',
-    //   sName: 'ShoppersLand Northland',
-    //   sAreaCode: 'T2L',
-    //   sPostalCode: 'T2L2K1',
-    //   sPriceMult: 0.67,
-    //   sItems: [],
-    //   sManagerId: ''
-    // };
 
     const store1 = this.createStore(
       '50 Quarry Edge Dr,Brampton,ON,L6V 4K2'.split( ',' ), 'Qarry' );
@@ -198,7 +101,8 @@ export class AdminComponent implements OnInit {
       sPostalCode: address[3].trim(),
       sPriceMult: Math.random() + 0.5,
       sItems: [],
-      sManagerId: ''
+      sManagerIds: [],
+      status: false
     };
   }
 
@@ -222,7 +126,8 @@ export class AdminComponent implements OnInit {
       iStoreQuantity: 10,
       oldPrice: 0,
       onSale: false,
-      price: itemDetail.iPrice * sPriceMult
+      price: itemDetail.iPrice * sPriceMult,
+      iBought: Math.round( Math.random() * 50 )
     };
   }
 }

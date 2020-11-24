@@ -7,6 +7,8 @@ import { StoreService } from '../../../services/store.service';
 import { Subscription } from 'rxjs';
 import { ItemService } from '../../../services/item.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
 
 @Component( {
               selector: 'app-customer',
@@ -21,6 +23,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   user: UserModel;
   userSub: Subscription;
   loading: boolean = false;
+  stores: StoreModel[] = [];
 
   constructor( public userService: UserService,
                public storeService: StoreService,
@@ -41,21 +44,29 @@ export class CustomerComponent implements OnInit, OnDestroy {
                        } );
 
     this.loading = true;
+
+    this.storeSub = this.storeService.fetchStore()
+                        .valueChanges()
+                        .subscribe( value => {
+                          if ( value?.length > 0 ) {
+                            this.stores = value;
+                          }
+                        } );
+
     setTimeout( () => {
-                  if ( this.user ) {
+                  if ( this.user?.preferedStore ) {
                     this.loading = false;
                     this.router.navigate( [ this.user.preferedStore ],
                                           { relativeTo: this.route } );
                   }
+                  this.loading = false;
                 },
                 1000 );
 
   }
 
   ngOnDestroy(): void {
-    if ( this.storeSub ) {
-      this.storeSub.unsubscribe();
-    }
+    this.storeSub.unsubscribe();
     this.userSub.unsubscribe();
   }
 
@@ -76,6 +87,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
                         this.router.navigate( [ this.user.preferedStore ],
                                               { relativeTo: this.route } );
                       }
+                      this.loading = false;
                     },
                     500 );
       }
@@ -86,25 +98,8 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.userService.logOut();
   }
 
-  getStore() {
-    return this.store;
-  }
-
-  private fetchStore(): void {
-    if ( this.user.preferedStore ) {
-      this.storeSub = this.storeService.fetchStore( 'sId', '==',
-                                                    this.user.preferedStore )
-                          .valueChanges()
-                          .subscribe( value => {
-                            if ( value?.length > 0 ) {
-                              this.store = value[0];
-                            }
-                          } );
-    }
-  }
-
-
   private updateUserShoppingList( result: string ): void {
+
     let found = false;
     for ( let sl of this.user.shoppingLists ) {
       if ( sl.sId === this.user.preferedStore && sl.sStatus === 'pending' ) {
@@ -114,7 +109,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
     }
 
     if ( !found ) {
-      this.user.shoppingLists.push( this.user.currentShoppingList );
+      if ( this.user.currentShoppingList?.sItems.length > 0 ) {
+        this.user.shoppingLists.push( this.user.currentShoppingList );
+      }
     }
 
     this.userService.updateUser( this.user );
@@ -123,7 +120,10 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.user.currentShoppingList = {
       sId: result,
       sStatus: 'pending',
-      sItems: []
+      sItems: [],
+      date: Timestamp.now(),
+      lName: this.getStoreName( result ) + ' - ' + Timestamp.now().toDate()
+                                                            .toDateString()
     };
     found = false;
 
@@ -136,5 +136,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     this.userService.updateUser( this.user );
 
+  }
+
+  private getStoreName( result: string ): any {
+    return this.stores.filter( value => value.sId === result )[0].sName;
   }
 }

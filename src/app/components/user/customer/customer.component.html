@@ -3,14 +3,15 @@
   <mat-toolbar-row>
     <img alt = 'Company Logo'
          class = 'company-logo-toolbar'
-         [routerLink] = 'this.user?.preferedStore'
          src = 'assets/logo/shoppers-logo-black.jpg'>
     &nbsp;
     <button color = 'primary' mat-button
+            [disabled] = '!this.user?.preferedStore'
             [routerLink] = 'this.user?.preferedStore'>Home
     </button>
     &nbsp;
     <button color = 'primary' mat-button
+            [disabled] = '!this.user?.preferedStore'
             routerLink = 'shopping-list'>Shopping List
     </button>
 
@@ -25,8 +26,17 @@
 
 <mat-progress-bar *ngIf = 'this.loading' mode = 'buffer'></mat-progress-bar>
 
+
+<div *ngIf = '!this.user?.preferedStore && !this.loading'>
+  <div class = 'text-center container' style = 'margin-top: 40vh; cursor: pointer'>
+    <button (click) = 'selectStore()' color = 'warn' mat-raised-button>
+      <mat-icon>storefront</mat-icon>
+      Pick a store!
+    </button>
+  </div>
+</div>
+
 <div *ngIf = '!this.loading' class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
-  <!--  <app-store *ngIf = 'store' [store] = 'this.getStore()' [user]='user'></app-store>-->
   <router-outlet></router-outlet>
 </div>
 

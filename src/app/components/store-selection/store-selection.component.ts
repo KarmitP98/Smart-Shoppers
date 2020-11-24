@@ -20,7 +20,7 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
   city: string = '';
   province: string = '';
   country: string = '';
-  chosen: string;
+  chosen: string = '';
 
 
   constructor( @Inject( MAT_DIALOG_DATA ) public data: UserModel,
@@ -37,8 +37,9 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
                         .valueChanges()
                         .subscribe( value => {
                           if ( value?.length > 0 ) {
-                            this.allStores = value.sort(
-                              a => a.sId === this.data.preferedStore ? -1 : 1 );
+                            this.allStores = value
+                              .sort(
+                                a => a.sId === this.data.preferedStore ? -1 : 1 );
                             this.stores = this.allStores;
                           }
                         } );
@@ -53,8 +54,6 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
   }
 
   filter( type: number ) {
-    // this.stores = this.allStores;
-    // this.stores = this.stores.filter(store => store)
     switch ( type ) {
       case 1:
         this.stores = this.allStores.filter(

@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ListItem, UserModel } from '../../model/models';
+import { ListItem, StoreModel, UserModel } from '../../model/models';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import firebase from 'firebase';
+import { StoreService } from '../../services/store.service';
 import Timestamp = firebase.firestore.Timestamp;
 
 @Component( {
@@ -16,8 +17,12 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
   user: UserModel;
   userSub: Subscription;
 
+  storeSub: Subscription;
+  stores: StoreModel[] = [];
+
   constructor( private route: ActivatedRoute,
-               private userService: UserService ) { }
+               private userService: UserService,
+               private storeService: StoreService ) { }
 
   ngOnInit(): void {
     const uId = this.route.snapshot.parent.parent.params.uId;
@@ -28,16 +33,26 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
                            this.user = value[0];
                          }
                        } );
+
+    this.storeSub = this.storeService.fetchStore()
+                        .valueChanges()
+                        .subscribe( value => {
+                          if ( value?.length > 0 ) {
+                            this.stores = value;
+                          }
+                        } );
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.storeSub.unsubscribe();
   }
 
   saveShoppingList( b: boolean ): void {
 
     this.user.currentShoppingList.sStatus = b ? 'saved' : 'cancelled';
     this.user.currentShoppingList.sId = Timestamp.now().toDate().toDateString();
+
     if ( !this.user.shoppingLists ) {
       this.user.shoppingLists = [];
     }
@@ -54,18 +69,27 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCurrentShoppingList() {
+    return this.user.shoppingLists;
+    // return this.user.shoppingLists.filter(
+    //   list => list.sId === this.user.preferedStore );
+  }
+
   private reset(): void {
     this.user.currentShoppingList = {
-      sStatus: 'current',
-      sId: 'current',
-      sItems: []
+      sStatus: 'pending',
+      sId: this.user.preferedStore,
+      sItems: [],
+      date: Timestamp.now(),
+      lName: this.getStoreName() + ' - ' + Timestamp.now().toDate()
+                                                    .toDateString()
     };
 
     this.userService.updateUser( this.user );
   }
 
-  getCurrentShoppingList(): any {
-    return this.user.shoppingLists.filter(
-      list => list.sId === this.user.preferedStore );
+  private getStoreName() {
+    return this.stores.filter(
+      value => value.sId === this.user.preferedStore )[0].sName;
   }
 }

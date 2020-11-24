@@ -41,7 +41,9 @@ export class UserService {
 
     this.afa.createUserWithEmailAndPassword( user.uEmail, password )
         .then( ( value ) => {
+
           user.uId = value.user.uid;
+
           this.addNewUser( user );
 
           this.router.navigate( [ '/', value.user.uid ] );

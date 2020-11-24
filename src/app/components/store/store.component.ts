@@ -36,15 +36,17 @@ export class StoreComponent implements OnInit, OnDestroy {
     const uId = this.route.snapshot.parent.parent.params.uId;
     const sId = this.route.snapshot.params.sId;
 
+    this.fetchStore( sId );
+
     this.userSub = this.userService.fetchUser( 'uId', '==', uId )
                        .valueChanges()
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
                            this.user = value[0];
                          }
+                         this.userSub.unsubscribe();
                        } );
 
-    this.fetchStore( sId );
   }
 
   ngOnDestroy(): void {
@@ -97,9 +99,9 @@ export class StoreComponent implements OnInit, OnDestroy {
                         .valueChanges()
                         .subscribe( value => {
                           if ( value?.length > 0 ) {
-                            this.store = value[0];
-                            this.store.sItems = this.store.sItems.sort(
+                            value[0].sItems.sort(
                               ( a, b ) => a.isle < b.isle ? -1 : 1 );
+                            this.store = value[0];
                           }
                         } );
 
