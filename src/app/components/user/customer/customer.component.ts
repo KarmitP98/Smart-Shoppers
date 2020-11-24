@@ -117,21 +117,25 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.userService.updateUser( this.user );
 
     this.user.preferedStore = result;
-    this.user.currentShoppingList = {
-      sId: result,
-      sStatus: 'pending',
-      sItems: [],
-      date: Timestamp.now(),
-      lName: this.getStoreName( result ) + ' - ' + Timestamp.now().toDate()
-                                                            .toDateString()
-    };
+
     found = false;
 
     for ( let sl of this.user.shoppingLists ) {
-      if ( sl.sStatus === 'pending' && sl.sId === result ) {
+      if ( sl.sId === result && sl.sStatus === 'pending' ) {
         this.user.currentShoppingList = sl;
         found = true;
       }
+    }
+
+    if ( !found ) {
+      this.user.currentShoppingList = {
+        sId: result,
+        sStatus: 'pending',
+        sItems: [],
+        date: Timestamp.now(),
+        lName: this.getStoreName( result ) + ' - ' + Timestamp.now().toDate()
+                                                              .toDateString()
+      };
     }
 
     this.userService.updateUser( this.user );

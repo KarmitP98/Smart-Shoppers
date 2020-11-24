@@ -71,8 +71,6 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
 
   getCurrentShoppingList() {
     return this.user.shoppingLists;
-    // return this.user.shoppingLists.filter(
-    //   list => list.sId === this.user.preferedStore );
   }
 
   private reset(): void {

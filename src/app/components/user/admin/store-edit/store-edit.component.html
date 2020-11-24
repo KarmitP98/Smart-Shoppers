@@ -67,7 +67,10 @@
                     [removable] = 'store.sManagerIds.length > 1'
                     [selectable] = 'true'>
             {{getManagerName(manager)}}
-            <mat-icon *ngIf = 'store.sManagerIds.length > 1' matChipRemove>cancel</mat-icon>
+            <mat-icon *ngIf = 'store.sManagerIds.length > 1'
+                      [matTooltip] = '"Remove "+getManagerName(manager)+" as manager!"'
+                      matChipRemove>cancel
+            </mat-icon>
           </mat-chip>
         </mat-chip-list>
       </mat-card-content>
