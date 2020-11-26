@@ -107,7 +107,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   createItemDetail( i ): ItemDetailModel {
-    const cat = this.categories[Math.floor( Math.random() * 8 )];
+    const cat = this.categories[Math.round( Math.random() * 8 )];
     return {
       iId: 't',
       iName: 'Item' + i,

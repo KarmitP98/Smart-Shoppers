@@ -15,4 +15,5 @@ export class ItemCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
 }

@@ -13,7 +13,6 @@ import { AdminComponent } from '../../components/user/admin/admin.component';
 import { StoreComponent } from '../../components/store/store.component';
 import { ShoppinpListViewComponent } from '../../components/shoppinp-list-view/shoppinp-list-view.component';
 import { StoresComponent } from '../../components/user/manager/stores/stores.component';
-import { EditStoreComponent } from '../../components/user/manager/edit-store/edit-store.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -35,7 +34,7 @@ const routes: Routes = [
         path: 'manager', component: ManagerComponent, children: [
           { path: '', redirectTo: 'stores', pathMatch: 'full' },
           { path: 'stores', component: StoresComponent },
-          { path: ':sId', component: EditStoreComponent }
+          { path: ':sId', component: StoreComponent }
         ]
       },
       {

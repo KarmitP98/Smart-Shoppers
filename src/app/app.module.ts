@@ -33,8 +33,6 @@ import { ManagerComponent } from './components/user/manager/manager.component';
 import { AdminComponent } from './components/user/admin/admin.component';
 import { UserComponent } from './components/user/user.component';
 import { ShoppinpListViewComponent } from './components/shoppinp-list-view/shoppinp-list-view.component';
-import { ShoppinpListComponent } from './components/shoppinp-list-view/shoppinp-list/shoppinp-list.component';
-import { ShoppinpListItemComponent } from './components/shoppinp-list-view/shoppinp-list/shoppinp-list-item/shoppinp-list-item.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { StoreSelectionComponent } from './components/store-selection/store-selection.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -60,8 +58,6 @@ import { MatChipsModule } from '@angular/material/chips';
                AdminComponent,
                UserComponent,
                ShoppinpListViewComponent,
-               ShoppinpListComponent,
-               ShoppinpListItemComponent,
                StoreSelectionComponent,
                ManagerEditComponent,
                StoreEditComponent,

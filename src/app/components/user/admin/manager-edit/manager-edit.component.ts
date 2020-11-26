@@ -17,7 +17,8 @@ export class ManagerEditComponent implements OnInit, OnDestroy {
 
   constructor( private route: ActivatedRoute,
                private userService: UserService,
-               public dialog: MatDialog ) { }
+               public dialog: MatDialog ) {
+  }
 
   ngOnInit(): void {
 
@@ -35,4 +36,7 @@ export class ManagerEditComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
+  save( user: UserModel ) {
+    this.userService.updateUser( user );
+  }
 }

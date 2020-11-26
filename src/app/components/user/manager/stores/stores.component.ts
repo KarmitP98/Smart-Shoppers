@@ -20,7 +20,8 @@ export class StoresComponent implements OnInit, OnDestroy {
 
   constructor( private userService: UserService,
                private storeService: StoreService,
-               private route: ActivatedRoute ) { }
+               private route: ActivatedRoute ) {
+  }
 
   ngOnInit(): void {
 
@@ -43,7 +44,7 @@ export class StoresComponent implements OnInit, OnDestroy {
 
   public fetchStore() {
     this.storeSub = this.storeService
-                        .fetchStore( 'sManagerId', '==',
+                        .fetchStore( 'sManagerIds', 'array-contains',
                                      this.user.uId )
                         .valueChanges()
                         .subscribe( value => {

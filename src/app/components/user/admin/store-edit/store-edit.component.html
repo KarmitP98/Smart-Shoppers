@@ -51,6 +51,14 @@
       </mat-card-header>
       <mat-card-content class = 'text-left'>
 
+        <mat-slide-toggle (change) = 'updateStoreStatus(store)'
+                          [(ngModel)] = 'store.status'
+                          [color] = 'store.status ? "accent":"warn"'
+                          labelPosition = 'before'
+                          name = 'status'>
+          Store Open? :
+        </mat-slide-toggle>
+        <br>
         <mat-form-field appearance = 'outline' class = 'w-25'>
           <mat-label>Store Manager</mat-label>
           <mat-select (selectionChange) = 'addStoreManager(store)'

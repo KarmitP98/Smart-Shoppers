@@ -22,11 +22,12 @@ export class StoreEditComponent implements OnInit, OnDestroy {
 
   storeSub: Subscription;
   userSub: Subscription;
-
+  managerId: string;
 
   constructor( private storeService: StoreService,
                private userService: UserService,
-               private route: ActivatedRoute ) { }
+               private route: ActivatedRoute ) {
+  }
 
   ngOnInit(): void {
 
@@ -51,6 +52,10 @@ export class StoreEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.storeSub.unsubscribe();
     this.userSub.unsubscribe();
+  }
+
+  updateStoreStatus( store: StoreModel ) {
+    this.storeService.updateStore( store );
   }
 
   filter( type: number ) {
@@ -86,34 +91,6 @@ export class StoreEditComponent implements OnInit, OnDestroy {
       this.filter( num );
     }
   }
-
-  // changeStoreManager( store: StoreModel ): void {
-  //
-  //   this.users.forEach( user => {
-  //     if ( user.mStoreIds?.some( value => value === store.sId ) ) {
-  //       console.log( 'Found Store' );
-  //       if ( user.uId !== store.sId ) {
-  //         console.log( 'Not Same ID' );
-  //         user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
-  //         this.userService.updateUser( user );
-  //       }
-  //     }
-  //
-  //     if ( user.uId === store.sManagerId ) {
-  //       console.log( 'Found User' );
-  //       if ( !user.mStoreIds ) {
-  //         console.log( 'No Stores' );
-  //         user.mStoreIds = [];
-  //       }
-  //       user.mStoreIds.push( store.sId );
-  //       this.userService.updateUser( user );
-  //       console.log( 'Added Store Ids' );
-  //     }
-  //   } );
-  //
-  //   this.storeService.updateStore( store );
-  // }
-  managerId: string;
 
   getManagerName( manager: string ): any {
     return this.users.filter( value => value.uId === manager )[0].uName;

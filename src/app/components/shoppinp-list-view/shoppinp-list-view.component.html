@@ -1,37 +1,50 @@
 <div *ngIf = 'user' class = 'text-center container' style = 'margin-top: 5vh;'>
 
-  <mat-card class = 'text-left'>
+  <mat-card class = 'text-left w-50 mat-elevation-z7' style = 'margin-left: 25%;'>
     <mat-card-header>
-      <mat-card-title> Current Shopping List</mat-card-title>
+      <mat-card-title>{{this.user.currentShoppingList.lName.split(" - ")[0]}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-list role = 'list'>
         <mat-list-item *ngFor = 'let item of user.currentShoppingList.sItems'>
-          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' matListIcon>
+          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
           <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
           <div mat-line>Store: <b>{{item.iStoreName}}</b></div>
           <div mat-line>Quanitiy: <b>{{item.iQuantity}}</b>
                         &nbsp;&nbsp;&nbsp;
-            <mat-button-toggle-group appearance = 'standard'>
-              <mat-button-toggle [disabled] = 'item.iQuantity === item.item.iStoreQuantity'>
-                <mat-icon (click) = 'changeQuantity(item,1)' color = 'accent'>arrow_circle_up</mat-icon>
-              </mat-button-toggle>
-              <mat-button-toggle [disabled] = 'item.iQuantity < 1 '>
-                <mat-icon (click) = 'changeQuantity(item,-1)' color = 'warn'>arrow_circle_down</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+            <button (click) = 'changeQuantity(item,-1)' mat-icon-button>
+              <mat-icon color = 'warn'>remove_circle</mat-icon>
+            </button>&nbsp;
+            <button (click) = 'changeQuantity(item,1)' [disabled] = 'item.iQuantity === item.item.iStoreQuantity'
+                    mat-icon-button>
+              <mat-icon color = 'accent'>add_circle</mat-icon>
+            </button>
+          </div>
+          <!--          <div *ngIf="item.iSize" mat-line>Size:-->
+          <!--            &nbsp;-->
+          <!--            <mat-button-toggle-group (change)="this.userService.updateUser(this.user)"-->
+          <!--                                     [(ngModel)]="item.iSize"-->
+          <!--                                     appearance="legacy">-->
+          <!--              <mat-button-toggle [value]="1"><b>S</b></mat-button-toggle>-->
+          <!--              <mat-button-toggle [value]="2"><b>M</b></mat-button-toggle>-->
+          <!--              <mat-button-toggle [value]="3"><b>L</b></mat-button-toggle>-->
+          <!--              <mat-button-toggle [value]="4"><b>XL</b></mat-button-toggle>-->
+          <!--            </mat-button-toggle-group>-->
+          <!--          </div>-->
+          <div mat-line><h4>Price: {{item.iQuantity}} X {{item.item.price | currency}}
+                            = <b>{{(item.iQuantity * item.item.price) | currency}}</b></h4></div>
+          <div mat-line>
+            <button (click) = 'removeItem(item)'
+                    class = 'w-100'
+                    color = 'warn'
+                    mat-raised-button>Remove
+            </button>
+            <hr>
           </div>
         </mat-list-item>
       </mat-list>
 
       <mat-card-actions align = 'end'>
-        <button (click) = 'saveShoppingList(true)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
-                color = 'accent'
-                mat-icon-button
-                matTooltip = 'Save'
-                style = 'width: 75px;'>
-          <mat-icon>check_circle</mat-icon>
-        </button>
         <button (click) = 'saveShoppingList(false)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
                 color = 'warn'
                 mat-icon-button
@@ -39,29 +52,42 @@
                 style = 'width: 75px;'>
           <mat-icon>cancel</mat-icon>
         </button>
+        <button (click) = 'saveShoppingList(true)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
+                color = 'accent'
+                mat-icon-button
+                matTooltip = 'Save'
+                style = 'width: 75px;'>
+          <mat-icon>check_circle</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card-content>
   </mat-card>
 
   <hr>
+  <hr>
   <h2>Previous Shopping Lists</h2>
-
-  <mat-accordion>
-    <mat-expansion-panel *ngFor = 'let list of getCurrentShoppingList()' class = 'text-left'>
+  <mat-accordion class = 'text-left' multi>
+    <mat-expansion-panel *ngFor = 'let list of getCurrentShoppingList()'
+                         hideToggle
+                         style = 'margin-bottom: 8px;'>
       <mat-expansion-panel-header>
         <mat-panel-title>{{list.lName}}</mat-panel-title>
-        <mat-panel-description>
-        </mat-panel-description>
+        <mat-icon [color] = "list.sStatus === 'pending' ? 'primary': list.sStatus === 'cancelled'? 'warn':'accent'">
+          save
+        </mat-icon>
       </mat-expansion-panel-header>
       <mat-list role = 'list'>
         <mat-list-item *ngFor = 'let item of list.sItems'>
-          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' matListIcon>
+          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
           <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
           <div mat-line>Store: <b>{{item.iStoreName}}</b></div>
           <div mat-line>Quanitiy: <b>{{item.iQuantity}}</b></div>
+          <div mat-line>Size: <b>{{getItemSize(item.iSize)}}</b></div>
+          <div mat-line>
+            <hr>
+          </div>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
   </mat-accordion>
-
 </div>

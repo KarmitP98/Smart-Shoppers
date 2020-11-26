@@ -30,13 +30,26 @@ body { font-family: Roboto, "Helvetica Neue", sans-serif; margin: 0; }
 
 .store-card:hover {
   transform: scale(1.01);
-  transition: transform .3s;}
+  transition: transform .3s;
+  }
 
 .item-card {
   cursor: pointer;
+  transition: all .3s ease-in-out;
   }
 
 .item-card:hover {
   transform: scale(1.02);
-  transition: all 0.2s;
   }
+
+.clickable {
+  cursor: pointer;
+  }
+
+/*button {*/
+/*  transition: all .3s ease-in-out;*/
+/*}*/
+
+/*button:hover {*/
+/*  transform: scale(1.2);*/
+/*}*/
