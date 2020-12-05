@@ -1,0 +1,138 @@
+.card {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  height: 420px;
+  overflow: hidden;
+  transition: 0.2s;
+  width: 260px;
+  }
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+
+.card::before {
+  background: #122936;
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: -50%;
+  transform: skewY(345deg);
+  transition: 0.2s;
+  width: 100%;
+  }
+
+.card:hover::before {
+  top: -70%;
+  transform: skewY(390deg);
+  }
+
+.card:after {
+  /*content: "Phillips";*/
+  bottom: 0;
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 8em;
+  font-weight: 600;
+  left: 0;
+  position: absolute;
+  }
+
+.card .imgBx {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: 0;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  }
+
+.card .imgBx img {
+  cursor: pointer;
+  max-width: 100%;
+  transition: 0.2s;
+  }
+
+.card:hover .imgBx img {
+  border-radius: 10px;
+  max-width: 70%;
+  }
+
+.card .contentBx {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  }
+
+.card .titleBx {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-left: 20px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+  }
+
+.card .contentBx h3 {
+  color: var(--rich-black);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  }
+
+.card .titleBx h4 {
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  }
+
+.card .contentBx .price {
+  color: black;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  max-width: 90%;
+  text-transform: uppercase;
+  z-index: 1;
+  }
+
+.card .contentBx .cancelled {
+  color: var(--danger);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  z-index: 1;
+  }
+
+.card .contentBx .buy {
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  opacity: 0;
+  padding: 10px 30px;
+  /*background: black;*/
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  top: 200px;
+  transition: 0.2s;
+  }
+
+.card:hover .contentBx .buy {
+  opacity: 1;
+  top: 0;
+  }

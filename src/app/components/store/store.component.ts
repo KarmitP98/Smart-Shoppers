@@ -74,30 +74,59 @@ export class StoreComponent implements OnInit, OnDestroy {
     this.itemSub.unsubscribe();
   }
 
-  search( sale: boolean ) {
+  search( sale: boolean, row?: number ) {
     if ( sale ) {
       return this.store.sItems.filter( value => !value.onSale );
     } else if ( this.category ) {
+
+      if ( !row ) {
+        return this.store.sItems.filter(
+          item => !item.onSale && item.itemDetail.iCategory === this.category &&
+            item.itemDetail.iName.toLowerCase().includes(
+              this.itemName.toLowerCase() ) );
+      }
+
       return this.store.sItems.filter(
         item => !item.onSale && item.itemDetail.iCategory === this.category &&
           item.itemDetail.iName.toLowerCase().includes(
-            this.itemName.toLowerCase() ) );
+            this.itemName.toLowerCase() ) ).slice( 4 * (row - 1), (4 * row) );
     } else {
+      if ( !row ) {
+        return this.store.sItems.filter(
+          item => !item.onSale && item.itemDetail.iName.toLowerCase().includes(
+            this.itemName.toLowerCase() ) );
+      }
+
       return this.store.sItems.filter(
         item => !item.onSale && item.itemDetail.iName.toLowerCase().includes(
-          this.itemName.toLowerCase() ) );
+          this.itemName.toLowerCase() ) ).slice( 4 * (row - 1), (4 * row) );
     }
   }
 
-  getNonSaleItems() {
+  getRows( n: number ) {
+    const rows: number[] = [];
+    for ( let i = 1; i <= Math.floor( n / 4 ) + (n % 4 > 0 ? 1 : 0); i++ ) {
+      rows.push( i );
+    }
+
+    return rows;
+  }
+
+  getNonSaleItems( row?: number ): ItemModel[] {
+    if ( row ) {
+      return this.store.sItems.filter( value => !value.onSale ).slice( 4 * (row - 1), (4 * row) );
+    }
     return this.store.sItems.filter( value => !value.onSale );
   }
 
-  getSaleItems() {
-    return this.store.sItems.filter( value => value.onSale ).slice( 0, 5 );
+  getSaleItems( row?: number ) {
+    if ( row ) {
+      return this.store.sItems.filter( value => value.onSale ).slice( 4 * (row - 1), (4 * row) );
+    }
+    return this.store.sItems.filter( value => value.onSale );
   }
 
-  getSuggestions() {
+  getSuggestions( row?: number ) {
     return this.store.sItems.concat().sort( ( a, b ) => a.iBought > b.iBought ? 1 : -1 ).slice( 0, 4 );
   }
 

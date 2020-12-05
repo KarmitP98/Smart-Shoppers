@@ -1,30 +1,32 @@
-<mat-card class = 'mat-elevation-z4 text-left item-card'>
-  <mat-card-header>
-    <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' matCardAvatar>
-    <mat-card-title>
-      {{item.itemDetail.iName}}
-    </mat-card-title>
-    <mat-card-subtitle>
-      {{item.itemDetail.iCategory | titlecase}}
-    </mat-card-subtitle>
-  </mat-card-header>
-  <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' mat-card-image>
-  <mat-card-content>
-    {{item.itemDetail.iDesc}}
-    <br>
-    Stock: <b
-    [style] = 'item.iStoreQuantity > 0 ? "color: green":"color: red"'>{{item.iStoreQuantity > 0 ? item.iStoreQuantity : "Out of stock!"}}</b>
-    <br>
-    Location: <b>Isle {{item.isle}}</b>
-    <p *ngIf = '!item.onSale'>
-      <mat-card-title>Price: {{item.price | currency}}</mat-card-title>
-    </p>
-  </mat-card-content>
-  <button mat-icon-button
-          matTooltip = 'Quick Add to Cart!'
-          matTooltipPosition = 'above'>
-    <mat-icon color = 'accent'>add_shopping_cart</mat-icon>
-  </button>
-  <mat-dialog-actions>
-  </mat-dialog-actions>
-</mat-card>
+<div class = 'card'>
+  <div class = 'titleBx'>
+    <h4>{{item.itemDetail.iName | uppercase}}</h4>
+  </div>
+  <div (click) = 'this.showItemDetail(item)'
+       class = 'imgBx'>
+    <img [src] = 'item.itemDetail.iIcon' style = 'width: 100%;'>
+  </div>
+  <div class = 'contentBx'>
+    <h3>Isle: {{item.isle}}</h3>
+
+    <h2 class = 'price'>{{item.price | currency}}
+      <span *ngIf = 'item.onSale' style = 'color: var(--red); font-size: small'><del>{{item.oldPrice | currency}}</del></span>
+    </h2>
+
+    <a *ngIf = 'item.iStoreQuantity === 0 && user.uType === "customer"'
+       class = 'buy'
+       style = 'background: darkgrey'>
+      Out of Stock
+    </a>
+
+    <a (click) = 'this.user.uType === "manager" ? this.showItemDetail(this.item) : this.addToList(this.item)'
+       *ngIf = 'item.iStoreQuantity > 0 || user.uType === "manager"'
+       [style] = 'this.user.uType === "manager" ? "background-color: var(--orange)":"background-color: var(--caribbean-green)"'
+       class = 'buy'
+       matTooltip = 'Add Item to List'>
+      {{this.user.uType === "manager" ? "Edit Item" : "Add to List"}}
+    </a>
+  </div>
+</div>
+
+

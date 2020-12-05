@@ -101,6 +101,12 @@ $mat-caribbean-green: (
   )
 );
 
+:root {
+  --rich-black: #09141f;
+  --caribbean-green: #02bc73
+}
+
+;
 
 $primary: mat-palette($mat-rich-black, 500, 100, 700);
 $accent: mat-palette($mat-caribbean-green, 500, 100, 700);
