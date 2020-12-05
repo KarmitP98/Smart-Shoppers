@@ -12,11 +12,17 @@ export class SignUpComponent implements OnInit {
   uType = 'customer';
   uEmail: string;
   uPassword: string;
+  uPasswordAgain: string;
   uName: string;
+  pattern = '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$';
 
-  constructor( private userService: UserService ) { }
+  // signUpForm: FormGroup;
+
+  constructor( private userService: UserService ) {
+  }
 
   ngOnInit(): void {
+    // this.createForm();
   }
 
   public signUpWithEmail(): void {
@@ -25,7 +31,8 @@ export class SignUpComponent implements OnInit {
       uEmail: this.uEmail,
       uName: this.uName,
       uProPic: this.uType === 'customer' ? 'assets/images/customer-pro.png' : this.uType === 'manager' ? 'assets/images/manager-pro.png' : 'assets/images/admin-pro.png',
-      uType: this.uType
+      uType: this.uType,
+      uPassword: this.uPassword
     };
 
     this.userService.signUpWithEmail( user, this.uPassword );

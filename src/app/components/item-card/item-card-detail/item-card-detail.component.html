@@ -1,29 +1,128 @@
-<mat-grid-list cols = '2'>
-  <mat-grid-tile>
-    <img [src] = 'data.item.itemDetail.iIcon'
-         alt = 'Icon Image'
-         style = 'width: 100%; height: available'>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card class = 'mat-elevation-z0'>
-      <mat-card-header>
-        <mat-card-title>
-          {{data.item.itemDetail.iName}}
-        </mat-card-title>
-      </mat-card-header>
-    </mat-card>
-    <h1>{{data.item.itemDetail.iName}}</h1>
-    <br>
-    <h3>{{data.item.itemDetail.iDesc}}</h3>
-    <br>
-    <h4>{{data.item.isle}}</h4>
-  </mat-grid-tile>
-</mat-grid-list>
+<div mat-dialog-title>
+  {{data.item.itemDetail.iName}}
+</div>
+<mat-dialog-content>
+  <div class = 'row'>
+    <div class = 'col'>
+      <img [src] = 'data.item.itemDetail.iIcon'
+           alt = 'Icon Image'
+           style = 'width: 100%; height: available'>
+    </div>
+
+    <div class = 'text-left col'>
+      <div>
+        <h1><b>{{data.item.itemDetail.iName}}</b></h1>
+
+        <h2>{{data.item.itemDetail.iDesc}}</h2>
+
+        <div *ngIf = "data.user.uType === 'customer'">
+          <h4>Isle: <b>{{data.item.isle}}</b></h4>
+
+          <h4>Stock Available: {{data.item.iStoreQuantity}}</h4>
+
+          <div *ngIf = 'onSale'>
+            <h4>Old Price:
+              <del style = 'color: red'>{{data.item.oldPrice | currency}}</del>
+            </h4>
+            <h2>
+              Price: <b style = 'color: green'>{{data.item.price | currency}}</b></h2>
+            <h2>Sale till: <b>{{data.item.onSaleDate.toDate() | date}}</b></h2>
+          </div>
+          <div *ngIf = '!onSale'>
+            <h2>
+              Price: <b>{{data.item.price | currency}}</b></h2>
+          </div>
+          <mat-form-field appearance = 'outline'>
+            <mat-label>Quantity</mat-label>
+            <mat-select [(ngModel)] = 'quantity'
+                        name = 'quantity'>
+              <mat-option *ngFor = 'let num of available'
+                          [value] = 'num'>{{num}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance = 'outline'>
+            <mat-label>Size</mat-label>
+            <mat-select [(ngModel)] = 'size' name = 'size'>
+              <mat-option [value] = '1'>Small</mat-option>
+              <mat-option [value] = '2'>Medium</mat-option>
+              <mat-option [value] = '3'>Large</mat-option>
+              <mat-option [value] = '4'>X-Large</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <div *ngIf = "this.data.user.uType === 'manager'">
+          <form #f = 'ngForm' (ngSubmit) = 'saveItem()'>
+            <mat-form-field appearance = 'outline'>
+              <mat-label>Isle</mat-label>
+              <input #isle [(ngModel)] = 'data.item.isle'
+                     matInput
+                     min = '0'
+                     name = 'isle'
+                     required
+                     type = 'number'>
+            </mat-form-field>
+            <mat-error *ngIf = 'isle.value < 1' matSuffix>Isle cannot be less than 1!!!</mat-error>
+            <br>
+            <mat-form-field appearance = 'outline'>
+              <mat-label>Stock</mat-label>
+              <input #stock [(ngModel)] = 'data.item.iStoreQuantity'
+                     matInput
+                     min = '0'
+                     name = 'stock'
+                     required
+                     type = 'number'>
+            </mat-form-field>
+            <mat-error *ngIf = 'stock.value < 0' matSuffix>Stock cannot be less than 0!!!</mat-error>
+            <br>
+            <mat-slide-toggle #sale
+                              [(ngModel)] = 'onSale'
+                              [color] = "onSale ? 'accent':'warn'"
+                              labelPosition = 'before'
+                              name = 'sale'
+                              required>
+              On Sale?
+            </mat-slide-toggle>
+            <br><br>
+            <mat-form-field *ngIf = 'onSale' appearance = 'outline'>
+              <mat-label>New Price</mat-label>
+              <input [(ngModel)] = 'newPrice' [required] = 'onSale'
+                     matInput
+                     min = '0'
+                     name = 'nPrice'
+                     type = 'number'>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field *ngIf = 'onSale' appearance = 'outline'>
+              <mat-label>Sale Until</mat-label>
+              <input [(ngModel)] = 'onSaleDate' [matDatepicker] = 'picker'
+                     [required] = 'onSale'
+                     matInput
+                     name = 'date'>
+              <mat-datepicker-toggle [for] = 'picker' matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
 <mat-dialog-actions align = 'end'>
-  <button (click) = 'addToList()'
-          [color] = 'data.item.iStoreQuantity > 0 ? "accent":"warn"'
-          [disabled] = 'data.item.iStoreQuantity === 0'
+  <button (click) = 'saveItem()' *ngIf = "data.user.uType === 'manager'"
+          [disabled] = 'f?.invalid'
+          color = 'accent'
           mat-raised-button>
+    Save Item
+  </button>
+  <button (click) = 'removeItem()' *ngIf = "data.user.uType === 'manager'" color = 'warn' mat-raised-button>
+    Remove Item
+  </button>
+  &nbsp;
+  <button (click) = 'addToList()' *ngIf = "data.user.uType === 'customer'" color = 'accent' mat-raised-button>
     Add to List
   </button>
 </mat-dialog-actions>

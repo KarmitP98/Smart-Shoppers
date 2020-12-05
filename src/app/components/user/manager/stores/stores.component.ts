@@ -20,31 +20,32 @@ export class StoresComponent implements OnInit, OnDestroy {
 
   constructor( private userService: UserService,
                private storeService: StoreService,
-               private route: ActivatedRoute ) { }
+               private route: ActivatedRoute ) {
+  }
 
   ngOnInit(): void {
 
     const uId = this.route.snapshot.parent.parent.params.uId;
+
+    this.fetchStore( uId );
 
     this.userSub = this.userService.fetchUser( 'uId', '==', uId )
                        .valueChanges()
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
                            this.user = value[0];
-                           this.fetchStore();
                          }
                        } );
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    this.storeSub.unsubscribe();
+    this.storeSub ? this.storeSub.unsubscribe() : null;
   }
 
-  public fetchStore() {
+  public fetchStore( uId ) {
     this.storeSub = this.storeService
-                        .fetchStore( 'sManagerId', '==',
-                                     this.user.uId )
+                        .fetchStore( 'sManagerIds', 'array-contains', uId )
                         .valueChanges()
                         .subscribe( value => {
                           if ( value?.length > 0 ) {

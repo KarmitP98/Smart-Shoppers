@@ -9,7 +9,7 @@ export class ItemService {
 
   constructor( private afs: AngularFirestore ) { }
 
-  public fetchItems( child?, condition?, value? ): any {
+  public fetchItems( child?, condition?, value? ) {
     if ( child ) {
       return this.afs.collection<ItemDetailModel>( 'items',
                                                    ref => ref.where( child,

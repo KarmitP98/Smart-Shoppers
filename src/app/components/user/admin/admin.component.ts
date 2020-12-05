@@ -23,7 +23,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   constructor( public userService: UserService,
                public storeService: StoreService,
                public dialog: MatDialog,
-               public itemService: ItemService ) { }
+               public itemService: ItemService ) {
+  }
 
   ngOnInit(): void {
     this.storeSub = this.storeService.fetchStore()
@@ -74,7 +75,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     for ( let i = 0; i < 50; i++ ) {
       const itemDetail = this.createItemDetail( i );
       this.itemService.addItem( itemDetail );
-      // tslint:disable-next-line:prefer-const
 
       for ( const store of stores ) {
         if ( Math.random() > 0.4 ) {
@@ -107,7 +107,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   createItemDetail( i ): ItemDetailModel {
-    const cat = this.categories[Math.floor( Math.random() * 8 )];
+    const isle = Math.round( Math.random() * 8 );
+    const cat = this.categories[isle];
     return {
       iId: 't',
       iName: 'Item' + i,
@@ -118,10 +119,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     };
   }
 
-  createItemModel( itemDetail, sPriceMult: number ): ItemModel {
+  createItemModel( itemDetail: ItemDetailModel, sPriceMult: number ): ItemModel {
     return {
       itemDetail,
-      isle: Math.floor( (Math.random() * 100) + 1 ),
+      isle: this.getIsle( itemDetail.iCategory ),
       iStatus: 'stock',
       iStoreQuantity: 10,
       oldPrice: 0,
@@ -129,5 +130,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       price: itemDetail.iPrice * sPriceMult,
       iBought: Math.round( Math.random() * 50 )
     };
+  }
+
+  getIsle( cat: string ): number {
+    for ( let i = 0; i < this.categories.length; i++ ) {
+      if ( this.categories[i] === cat ) {
+        return (i + 1);
+      }
+    }
   }
 }

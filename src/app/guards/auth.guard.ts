@@ -19,7 +19,8 @@ export class AuthGuard implements CanActivate,
                                   CanActivateChild {
 
   constructor( private afa: AngularFireAuth,
-               private router: Router ) {}
+               private router: Router ) {
+  }
 
 
   canActivate( route: ActivatedRouteSnapshot,
@@ -45,8 +46,6 @@ export class AuthGuard implements CanActivate,
       const sub = this.afa.authState
                       .subscribe( ( value ) => {
                         if ( value ) {
-                          // resolve( this.router.navigate( [ '/', value.uid ]
-                          // ) );
                           resolve( false );
                         } else {
                           resolve( true );

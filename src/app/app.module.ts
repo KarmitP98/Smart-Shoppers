@@ -33,8 +33,6 @@ import { ManagerComponent } from './components/user/manager/manager.component';
 import { AdminComponent } from './components/user/admin/admin.component';
 import { UserComponent } from './components/user/user.component';
 import { ShoppinpListViewComponent } from './components/shoppinp-list-view/shoppinp-list-view.component';
-import { ShoppinpListComponent } from './components/shoppinp-list-view/shoppinp-list/shoppinp-list.component';
-import { ShoppinpListItemComponent } from './components/shoppinp-list-view/shoppinp-list/shoppinp-list-item/shoppinp-list-item.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { StoreSelectionComponent } from './components/store-selection/store-selection.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -46,9 +44,10 @@ import { ItemCardComponent } from './components/item-card/item-card.component';
 import { ItemCardDetailComponent } from './components/item-card/item-card-detail/item-card-detail.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StoresComponent } from './components/user/manager/stores/stores.component';
-import { EditStoreComponent } from './components/user/manager/edit-store/edit-store.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { AddNewStoreComponent } from './components/store/add-new-store/add-new-store.component';
+import { AddManagerComponent } from './components/user/manager/add-manager/add-manager.component';
 
 @NgModule( {
              declarations: [
@@ -60,8 +59,6 @@ import { MatChipsModule } from '@angular/material/chips';
                AdminComponent,
                UserComponent,
                ShoppinpListViewComponent,
-               ShoppinpListComponent,
-               ShoppinpListItemComponent,
                StoreSelectionComponent,
                ManagerEditComponent,
                StoreEditComponent,
@@ -69,7 +66,8 @@ import { MatChipsModule } from '@angular/material/chips';
                ItemCardComponent,
                ItemCardDetailComponent,
                StoresComponent,
-               EditStoreComponent
+               AddNewStoreComponent,
+               AddManagerComponent
              ],
              imports: [
                BrowserModule,
@@ -101,8 +99,10 @@ import { MatChipsModule } from '@angular/material/chips';
                MatChipsModule,
                AngularFireModule.initializeApp( environment.firebaseConfig ),
                FormsModule, MatDialogModule, MatTooltipModule
+               // ReactiveFormsModule
              ],
              providers: [],
              bootstrap: [ AppComponent ]
            } )
-export class AppModule {}
+export class AppModule {
+}

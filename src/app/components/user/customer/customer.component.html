@@ -1,33 +1,53 @@
 <!--suppress ALL -->
-<mat-toolbar>
+<mat-toolbar *ngIf = 'this.user' color = 'primary'>
   <mat-toolbar-row>
-    <img alt = 'Company Logo'
+    <img [routerLink] = 'this.user?.preferedStore'
+         alt = 'Company Logo'
          class = 'company-logo-toolbar'
-         src = 'assets/logo/shoppers-logo-black.jpg'>
-    &nbsp;
-    <button color = 'primary' mat-button
-            [disabled] = '!this.user?.preferedStore'
-            [routerLink] = 'this.user?.preferedStore'>Home
+         src = 'assets/logo/shoppers-logo-white.jpg'>
+    &nbsp;&nbsp;
+    <button
+      (click) = 'routeTo()'
+      class = 'menu-button'
+      mat-button
+      matTooltip = 'Store'>
+      <mat-icon>shopping_bag</mat-icon>
     </button>
     &nbsp;
-    <button color = 'primary' mat-button
-            [disabled] = '!this.user?.preferedStore'
-            routerLink = 'shopping-list'>Shopping List
+    <button
+      class = 'menu-button'
+      mat-button
+      matTooltip = 'Shopping List'
+      routerLink = 'shopping-list'>
+      <mat-icon [matBadge] = 'this.user?.currentShoppingList?.sItems.length'
+                matBadgeColor = 'warn'
+                size = 'large'>receipt_long
+      </mat-icon>
     </button>
+    &nbsp;
 
     <span class = 'spacer'></span>
-    <button (click) = 'selectStore()' mat-button>
-      {{user?.preferedStore ? "Change Store" : "Select Store"}}
+    <button (click) = 'selectStore()'
+            [matTooltip] = 'user?.preferedStore ? "Change Store" : "Select Store"'
+            class = 'menu-button'
+            color = 'warn'
+            mat-button>
+      <mat-icon>storefront</mat-icon>
+      <mat-icon>expand_more</mat-icon>
     </button>
     &nbsp;
-    <button (click) = 'logOut()' color = 'warn' mat-raised-button>Log Out</button>
+    <button (click) = 'logOut()'
+            color = 'warn'
+            mat-raised-button>
+      <mat-icon>power_settings_new</mat-icon>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-progress-bar *ngIf = 'this.loading' mode = 'buffer'></mat-progress-bar>
+<mat-progress-bar *ngIf = 'this.loading' mode = 'query'></mat-progress-bar>
 
 
-<div *ngIf = '!this.user?.preferedStore && !this.loading'>
+<div *ngIf = '!(this.user?.savedStore || this.user?.preferedStore) && !this.loading'>
   <div class = 'text-center container' style = 'margin-top: 40vh; cursor: pointer'>
     <button (click) = 'selectStore()' color = 'warn' mat-raised-button>
       <mat-icon>storefront</mat-icon>
@@ -39,7 +59,3 @@
 <div *ngIf = '!this.loading' class = 'text-center w-75' style = 'margin-left: 12.5vw;'>
   <router-outlet></router-outlet>
 </div>
-
-
-
-

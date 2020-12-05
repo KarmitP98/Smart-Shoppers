@@ -29,7 +29,9 @@
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/theme/theme.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/scriptFile.js"
+            ]
           },
           "configurations": {
             "production": {

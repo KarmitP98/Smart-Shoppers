@@ -1,0 +1,84 @@
+<div matDialogTitle>{{this.sName.length > 0 ? this.sName : "Store Name"}}
+  <hr>
+</div>
+<mat-dialog-content>
+  <form #storeForm = 'ngForm' (ngSubmit) = 'addNewStore()'>
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Store Name</mat-label>
+      <input [(ngModel)] = 'sName'
+             matInput
+             name = 'name'
+             required
+             type = 'text'>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Street Name</mat-label>
+      <input [(ngModel)] = 'street'
+             matInput
+             name = 'street'
+             required
+             type = 'text'>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>City</mat-label>
+      <input [(ngModel)] = 'city'
+             matInput
+             name = 'city'
+             required
+             type = 'text'>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Province</mat-label>
+      <input [(ngModel)] = 'province'
+             matInput
+             maxlength = '2'
+             name = 'province'
+             required
+             type = 'text'>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Country</mat-label>
+      <input [(ngModel)] = 'country'
+             matInput
+             name = 'country'
+             required
+             type = 'text'>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Postal Code</mat-label>
+      <input [(ngModel)] = 'postal'
+             matInput
+             name = 'postal'
+             placeholder = 'A1A 1A1'
+             required
+             type = 'text'>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance = 'outline' class = 'w-25'>
+      <mat-label>Price Multiplier</mat-label>
+      <input [(ngModel)] = 'priceMult'
+             matInput
+             max = '1.5'
+             min = '0.5'
+             name = 'priceMult'
+             required
+             type = 'number'>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align = 'end'>
+  <hr>
+  <button (click) = 'addNewStore()' [disabled] = 'storeForm.invalid' color = 'accent'
+          mat-raised-button>
+    Add New Store
+  </button>
+  &nbsp;
+  <button (click) = 'matDialog.closeAll()' color = 'warn' mat-raised-button>
+    Cancel
+  </button>
+</mat-dialog-actions>

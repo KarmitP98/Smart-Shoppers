@@ -6,12 +6,16 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserModel } from '../model/models';
+import { environment } from '../../environments/environment.prod';
+import firebase from 'firebase';
 
 @Injectable( {
                providedIn: 'root'
              } )
 export class UserService {
 
+  public loginTries = new BehaviorSubject<number>( 5 );
+  secondaryApp = firebase.initializeApp( environment.firebaseConfig, 'Secondary' );
   private loadingSubject = new BehaviorSubject<boolean>( false );
 
   constructor( private afs: AngularFirestore,
@@ -30,8 +34,22 @@ export class UserService {
           this.loadingSubject.next( false );
         } )
         .catch( ( err ) => {
-          this.showToast( err.message, 3000 );
+          console.log( err.code );
+          switch ( err.code ) {
+            case 'auth/wrong-password':
+              const st: string = '\nLogin Attempts Remaining: ' + (this.loginTries.value - 1);
+              this.showToast( err.message + st, 4000 );
+              this.loginTries.next( this.loginTries.value - 1 );
+              break;
+            case 'auth/too-many-requests':
+              this.showToast( 'Your account has been temporarily suspended! Please try again later!', 4000 );
+              this.loginTries.next( this.loginTries.value - 1 );
+              break;
+            default:
+              this.showToast( err.message, 3000 );
+          }
         } );
+
 
   }
 
@@ -107,4 +125,29 @@ export class UserService {
         .delete();
   }
 
+  addManager( user: UserModel, uPassword: string ) {
+    this.secondaryApp.auth().createUserWithEmailAndPassword( user.uEmail, uPassword )
+        .then( ( value ) => {
+          user.uId = value.user.uid;
+          this.addNewUser( user );
+          this.showToast( 'New Manger has been added to the system!' );
+          this.secondaryApp.auth().signOut();
+        } )
+        .catch( ( err ) => {
+          this.showToast( err.message, 3000 );
+          this.loadingSubject.next( false );
+        } );
+  }
+
+  deleteAccount( user: UserModel ) {
+    this.removeUser( user );
+    this.secondaryApp.auth().signInWithEmailAndPassword( user.uEmail, user.uPassword )
+        .then( value => {
+          this.secondaryApp.auth().currentUser.delete()
+              .then( () => {
+                this.showToast( 'User has been removed from the system!!!', 3000 );
+              } );
+          this.secondaryApp.auth().signOut();
+        } );
+  }
 }

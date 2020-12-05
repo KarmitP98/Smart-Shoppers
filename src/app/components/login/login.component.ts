@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
   uPassword: string;
 
   constructor( private userService: UserService,
-               private itemService: ItemService ) { }
+               private itemService: ItemService ) {
+  }
 
   ngOnInit(): void {
   }

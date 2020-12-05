@@ -7,12 +7,15 @@ export class UserModel {
   uEmail: string;
   uProPic: string;
   uType: string;
+  uPassword: string;
   uLevel?: number;
   preferedStore?: string;
   currentShoppingList?: ShoppingList;
   shoppingLists?: ShoppingList[];
   searches?: string[];
   mStoreIds?: string[];
+  disabled?: boolean;
+  savedStore?: string;
 }
 
 export class StoreModel {
@@ -39,6 +42,7 @@ export class ItemModel {
   isle: number;
   iBought: number;
   oldPrice?: number;
+  onSaleDate?: Timestamp;
 }
 
 export class ListItem {

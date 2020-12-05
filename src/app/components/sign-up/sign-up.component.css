@@ -1,0 +1,17 @@
+.selected-customer {
+  background: #0D1B2A;
+  color: white;
+  font-weight: bold;
+  }
+
+.selected-manager {
+  background: #04CC8E;
+  color: black;
+  font-weight: bold;
+  }
+
+.selected-admin {
+  background: #F44336;
+  color: white;
+  font-weight: bold;
+  }

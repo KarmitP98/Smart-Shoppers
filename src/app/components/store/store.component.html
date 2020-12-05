@@ -2,16 +2,38 @@
 <div *ngIf = 'user'>
 
   <div *ngIf = 'store'>
-    <h1>Welcome to {{store.sName}}</h1>
+    <h1>Welcome to {{store.sName}}    </h1>
+    <div *ngIf = "user.uType === 'manager'">
+      <mat-form-field *ngIf = 'allItems' appearance = 'outline'>
+        <mat-label>Add Item to Store</mat-label>
+        <mat-select [(ngModel)] = 'newItem' name = 'newItem'>
+          <mat-option [value] = 'null'>Add a new Item to Store</mat-option>
+          <mat-option *ngFor = 'let item of getAvailableItems()'
+                      [value] = 'item'>
+            {{item.iName}} - {{item.iCategory}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      &nbsp;
+      <button (click) = 'addItemToStore(newItem)' [disabled] = '!newItem'
+              color = 'accent'
+              mat-icon-button
+              matTooltip = 'Add New Item to Store'>
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <hr>
+    </div>
     <mat-form-field appearance = 'outline'>
       <mat-label>Category</mat-label>
       <mat-select [(ngModel)] = 'category'>
-        <mat-option [value] = 'null'>All</mat-option>
+        <mat-option [value] = '""'>All</mat-option>
         <mat-option *ngFor = 'let cat of categories' [value] = 'cat'>{{cat | titlecase}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance = 'outline' class = 'w-50'>
 
+    &nbsp;
+
+    <mat-form-field appearance = 'outline' class = 'w-50'>
       <mat-label>Search item...</mat-label>
       <input (keypress) = '$event.key === "Enter" ? search(false): ""' (keyup) = 'search(false)'
              [(ngModel)] = 'itemName'
@@ -22,19 +44,154 @@
 
     <hr>
 
+    <mat-card *ngIf = 'this.getSaleItems()?.length> 0 && this.category.length === 0 && this.itemName.length === 0'
+              class = 'mat-elevation-z5'
+              matBadge = '*' matBadgeColor = 'warn' matBadgeSize = 'large'>
+      <mat-card-content>
+        <h1><b>SALE</b></h1>
+        <hr>
+
+        <mat-grid-list cols = '4' rowHeight = '1:1.6'>
+          <mat-grid-tile *ngFor = 'let item of getSaleItems()'>
+
+            <mat-card class = 'mat-elevation-z4 text-left' style = 'width: 95%;height: 95%'>
+
+              <mat-card-header (click) = 'showItemDetail(item)' class = 'clickable'>
+                <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' matCardAvatar>
+                <mat-card-title>
+                  {{item.itemDetail.iName}}
+                </mat-card-title>
+                <mat-card-subtitle>
+                  {{item.itemDetail.iCategory | titlecase}}
+                </mat-card-subtitle>
+              </mat-card-header>
+              <img (click) = 'showItemDetail(item)' [src] = 'item.itemDetail.iIcon' alt = 'PIC' class = 'clickable'
+                   mat-card-image>
+              <mat-card-content>
+                {{item.itemDetail.iDesc}}
+                <br>
+                Stock: <b
+                [style] = 'item.iStoreQuantity > 0 ? "color: green":"color: red"'>{{item.iStoreQuantity > 0 ? item.iStoreQuantity : "Out of stock!"}}</b>
+                <br>
+                Location: <b>Isle {{item.isle}}</b>
+                <br>
+                Old Price:
+                <del style = 'color: red'>{{item.oldPrice | currency}}</del>
+                <br>
+                Price: <b style = 'color: green'>{{item.price | currency}}</b>
+
+              </mat-card-content>
+              <mat-card-actions *ngIf = "user.uType === 'customer'" align = 'end'>
+                <button (click) = 'addToList(item)'
+                        [disabled] = 'item.iStoreQuantity === 0'
+                        color = 'accent'
+                        mat-icon-button
+                        matTooltip = 'Quick Add to List!'
+                        matTooltipPosition = 'above'>
+                  <mat-icon>add_shopping_cart</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+
+    <br>
+
     <div class = 'text-center'>
 
-      <!--  <div class='sale-container'>-->
-      <!--    <mat-grid-list cols='4' rowHeight='1:1.5'>-->
-      <!--      <mat-grid-tile *ngFor='let item of getSaleItems()' (click)='showItemDetail(item)'>-->
-      <!--        <app-item-card [item]='item' style = 'width: 95%;height: 95%;'></app-item-card>-->
-      <!--      </mat-grid-tile>-->
-      <!--    </mat-grid-list>-->
-      <!--  </div>-->
+      <mat-card *ngIf = 'this.getSuggestions()?.length> 0 && this.category.length === 0 && this.itemName.length === 0'
+                class = 'mat-elevation-z0'>
+        <mat-card-content>
+          <h1><b>People also bought</b></h1>
+          <hr>
 
+          <mat-grid-list cols = '4' rowHeight = '1:1.5'>
+            <mat-grid-tile *ngFor = 'let item of getSuggestions()'>
+
+              <mat-card class = 'mat-elevation-z4 text-left' style = 'width: 95%;height: 95%'>
+
+                <mat-card-header (click) = 'showItemDetail(item)' class = 'clickable'>
+                  <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' matCardAvatar>
+                  <mat-card-title>
+                    {{item.itemDetail.iName}}
+                  </mat-card-title>
+                  <mat-card-subtitle>
+                    {{item.itemDetail.iCategory | titlecase}}
+                  </mat-card-subtitle>
+                </mat-card-header>
+                <img (click) = 'showItemDetail(item)' [src] = 'item.itemDetail.iIcon' alt = 'PIC' class = 'clickable'
+                     mat-card-image>
+                <mat-card-content>
+                  {{item.itemDetail.iDesc}}
+                  <br>
+                  Stock: <b
+                  [style] = 'item.iStoreQuantity > 0 ? "color: green":"color: red"'>{{item.iStoreQuantity > 0 ? item.iStoreQuantity : "Out of stock!"}}</b>
+                  <br>
+                  Location: <b>Isle {{item.isle}}</b>
+                  <br>
+                  Price: <b>{{item.price | currency}}</b>
+                  <mat-card-actions *ngIf = "user.uType === 'customer'" align = 'end'>
+                    <button (click) = 'addToList(item)'
+                            [disabled] = 'item.iStoreQuantity === 0'
+                            color = 'accent'
+                            mat-icon-button
+                            matTooltip = 'Quick Add to List!'
+                            matTooltipPosition = 'above'>
+                      <mat-icon>add_shopping_cart</mat-icon>
+                    </button>
+                  </mat-card-actions>
+                </mat-card-content>
+
+              </mat-card>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+
+      <hr>
+      <hr>
+      <h1><b>Items</b></h1>
+      <hr>
+      <hr>
       <mat-grid-list cols = '4' rowHeight = '1:1.5'>
-        <mat-grid-tile (click) = 'showItemDetail(item)' *ngFor = 'let item of search(false)' [@opacityUp]>
-          <app-item-card [item] = 'item' style = 'width: 95%;height: 95%;'></app-item-card>
+
+        <mat-grid-tile *ngFor = 'let item of search(false)' [@opacityUp]>
+          <mat-card class = 'mat-elevation-z4 text-left' style = 'width: 95%;height: 95%'>
+            <mat-card-header (click) = 'showItemDetail(item)' class = 'clickable'>
+              <img [src] = 'item.itemDetail.iIcon' alt = 'PIC' matCardAvatar>
+              <mat-card-title>
+                {{item.itemDetail.iName}}
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{item.itemDetail.iCategory | titlecase}}
+              </mat-card-subtitle>
+            </mat-card-header>
+            <img (click) = 'showItemDetail(item)' [src] = 'item.itemDetail.iIcon' alt = 'PIC' class = 'clickable'
+                 mat-card-image>
+            <mat-card-content>
+              {{item.itemDetail.iDesc}}
+              <br>
+              Stock: <b
+              [style] = 'item.iStoreQuantity > 0 ? "color: green":"color: red"'>{{item.iStoreQuantity > 0 ? item.iStoreQuantity : "Out of stock!"}}</b>
+              <br>
+              Location: <b>Isle {{item.isle}}</b>
+              <br>
+              Price: {{item.price | currency}}
+
+            </mat-card-content>
+            <mat-card-actions *ngIf = "user.uType === 'customer'" align = 'end'>
+              <button (click) = 'addToList(item)'
+                      [disabled] = 'item.iStoreQuantity === 0'
+                      color = 'accent'
+                      mat-icon-button
+                      matTooltip = 'Quick Add to List!'
+                      matTooltipPosition = 'above'>
+                <mat-icon>add_shopping_cart</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
     </div>

@@ -1,24 +1,31 @@
 <div *ngIf = 'user'>
   <div *ngIf = 'stores'>
-    <h2>Stores</h2>
-    <hr>
-    <mat-card *ngFor = 'let store of stores'
-              [routerLink] = '["../",store.sId]'
-              class = 'text-left store-card mat-elevation-z4'
-              style = 'margin-bottom: 8px;'>
-      <mat-card-header>
-        <mat-card-title>
-          {{store.sName}}
-        </mat-card-title>
-        <mat-card-subtitle>
-          {{store.sStreet + ", " + store.sCity + ", " + store.sProvince + ", " + store.sPostalCode}}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        Manager: <b>{{this.user.uName}}</b>
-        <br>
-        Items: <b>{{store.sItems.length}}</b>
-      </mat-card-content>
-    </mat-card>
+    <div *ngIf = 'stores.length > 0'>
+      <h2>Stores</h2>
+      <hr>
+      <mat-card *ngFor = 'let store of stores'
+                [routerLink] = '["../",store.sId]'
+                class = 'text-left store-card mat-elevation-z4'
+                style = 'margin-bottom: 8px;'>
+        <mat-card-header>
+          <div matCardAvatar>
+            <mat-icon color = 'accent'>storefront</mat-icon>
+          </div>
+          <mat-card-title>
+            {{store.sName}}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{store.sStreet + ", " + store.sCity + ", " + store.sProvince + ", " + store.sPostalCode}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          Items: <b>{{store.sItems.length}}</b>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div *ngIf = 'stores.length === 0'>
+      <h1 style = 'margin-top: 40vh;'>Uhhh ohh! Seems like you have not been assigned any store...</h1>
+    </div>
   </div>
 </div>

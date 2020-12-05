@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ListItem, StoreModel, UserModel } from '../../model/models';
+import { ListItem, ShoppingList, StoreModel, UserModel } from '../../model/models';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
@@ -21,8 +21,9 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
   stores: StoreModel[] = [];
 
   constructor( private route: ActivatedRoute,
-               private userService: UserService,
-               private storeService: StoreService ) { }
+               public userService: UserService,
+               public storeService: StoreService ) {
+  }
 
   ngOnInit(): void {
     const uId = this.route.snapshot.parent.parent.params.uId;
@@ -63,14 +64,49 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
   }
 
   changeQuantity( item: ListItem, num: number ): void {
-    if ( item.iQuantity > 0 && item.iQuantity < item.item.iStoreQuantity ) {
-      item.iQuantity += num;
+
+    item.iQuantity += num;
+
+    if ( item.iQuantity === 0 ) {
+      this.removeItem( item );
+    } else {
       this.userService.updateUser( this.user );
     }
   }
 
+  removeItem( item: ListItem ) {
+    for ( let i = 0; i < this.user.currentShoppingList.sItems.length; i++ ) {
+      if ( this.user.currentShoppingList.sItems[i].item === item.item ) {
+        this.user.currentShoppingList.sItems.splice( i, 1 );
+      }
+    }
+    this.userService.updateUser( this.user );
+  }
+
   getCurrentShoppingList() {
     return this.user.shoppingLists;
+  }
+
+  public getStore() {
+    return this.stores.filter(
+      value => value.sId === this.user.preferedStore )[0];
+  }
+
+  getItemSize( iSize: number ) {
+    switch ( iSize ) {
+      case 1:
+        return 'Small';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'Large';
+      default:
+        return 'X-Large';
+    }
+  }
+
+  getCurrentItems( list: ShoppingList ) {
+    return list.sItems.sort( ( a, b ) => a.item.isle > b.item.isle ? 1 : -1 );
   }
 
   private reset(): void {
@@ -79,15 +115,10 @@ export class ShoppinpListViewComponent implements OnInit, OnDestroy {
       sId: this.user.preferedStore,
       sItems: [],
       date: Timestamp.now(),
-      lName: this.getStoreName() + ' - ' + Timestamp.now().toDate()
-                                                    .toDateString()
+      lName: this.getStore().sName + ' - ' + Timestamp.now().toDate()
+                                                      .toDateString()
     };
 
     this.userService.updateUser( this.user );
-  }
-
-  private getStoreName() {
-    return this.stores.filter(
-      value => value.sId === this.user.preferedStore )[0].sName;
   }
 }

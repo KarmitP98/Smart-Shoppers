@@ -4,6 +4,10 @@ import { StoreService } from '../../../../services/store.service';
 import { ActivatedRoute } from '@angular/router';
 import { StoreModel, UserModel } from '../../../../model/models';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewStoreComponent } from '../../../store/add-new-store/add-new-store.component';
+
+declare function confirmation(): boolean;
 
 @Component( {
               selector: 'app-store-edit',
@@ -22,11 +26,13 @@ export class StoreEditComponent implements OnInit, OnDestroy {
 
   storeSub: Subscription;
   userSub: Subscription;
-
+  managerId: string;
 
   constructor( private storeService: StoreService,
                private userService: UserService,
-               private route: ActivatedRoute ) { }
+               private route: ActivatedRoute,
+               private matDialog: MatDialog ) {
+  }
 
   ngOnInit(): void {
 
@@ -39,11 +45,11 @@ export class StoreEditComponent implements OnInit, OnDestroy {
                           }
                         } );
 
-    this.userSub = this.userService.fetchUser( 'uType', '==', 'manager' )
+    this.userSub = this.userService.fetchUser()
                        .valueChanges()
                        .subscribe( value => {
                          if ( value?.length > 0 ) {
-                           this.users = value;
+                           this.users = value.filter( value1 => !value1.disabled );
                          }
                        } );
   }
@@ -51,6 +57,11 @@ export class StoreEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.storeSub.unsubscribe();
     this.userSub.unsubscribe();
+  }
+
+  updateStoreStatus( store: StoreModel ) {
+    this.storeService.updateStore( store );
+    // this.users.filter(value => value.savedStore === store.sId).forEach(value => value.savedStore = "");
   }
 
   filter( type: number ) {
@@ -87,68 +98,75 @@ export class StoreEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  // changeStoreManager( store: StoreModel ): void {
-  //
-  //   this.users.forEach( user => {
-  //     if ( user.mStoreIds?.some( value => value === store.sId ) ) {
-  //       console.log( 'Found Store' );
-  //       if ( user.uId !== store.sId ) {
-  //         console.log( 'Not Same ID' );
-  //         user.mStoreIds.splice( user.mStoreIds.indexOf( store.sId ), 1 );
-  //         this.userService.updateUser( user );
-  //       }
-  //     }
-  //
-  //     if ( user.uId === store.sManagerId ) {
-  //       console.log( 'Found User' );
-  //       if ( !user.mStoreIds ) {
-  //         console.log( 'No Stores' );
-  //         user.mStoreIds = [];
-  //       }
-  //       user.mStoreIds.push( store.sId );
-  //       this.userService.updateUser( user );
-  //       console.log( 'Added Store Ids' );
-  //     }
-  //   } );
-  //
-  //   this.storeService.updateStore( store );
-  // }
-  managerId: string;
-
-  getManagerName( manager: string ): any {
-    return this.users.filter( value => value.uId === manager )[0].uName;
+  getManagerName( manager: string ) {
+    if ( this.users?.length > 0 ) {
+      return this.users.filter( value => value.uId === manager )[0].uName;
+    }
   }
 
   removeManager( manager: string, store: StoreModel ): void {
     store.sManagerIds.splice( store.sManagerIds.indexOf( manager ), 1 );
+    if ( store.sManagerIds.length === 0 ) {
+      store.status = false;
+      this.users.filter( value => value.savedStore === store.sId ).forEach( value => value.savedStore = '' );
+    }
     this.storeService.updateStore( store );
 
-    this.users.filter( value => value.uId === manager )[0].mStoreIds.splice(
-      this.users.filter( value => value.uId === manager )[0].mStoreIds.indexOf(
-        store.sId ), 1 );
-    this.userService.updateUser(
-      this.users.filter( value => value.uId === manager )[0] );
+    const m: UserModel = this.users.filter( value => value.uId === manager )[0];
+    m.mStoreIds.splice( m.mStoreIds.indexOf( store.sId ), 1 );
+    this.userService.updateUser( m );
 
   }
 
   addStoreManager( store: StoreModel ): void {
-    if ( !store.sManagerIds.some( value => value === this.managerId ) ) {
-      store.sManagerIds.push( this.managerId );
-      if ( !store.status ) {
-        store.status = true;
+    if ( this.managerId.length > 0 ) {
+      if ( !store.sManagerIds.some( value => value === this.managerId ) ) {
+        store.sManagerIds.push( this.managerId );
+        if ( !store.status ) {
+          store.status = true;
+        }
+        this.storeService.updateStore( store );
+
+        const temp = this.users.filter(
+          value => value.uId === this.managerId )[0];
+
+        if ( !temp.mStoreIds ) {
+          temp.mStoreIds = [];
+        }
+
+        temp.mStoreIds.push( store.sId );
+        this.userService.updateUser( temp );
+        this.managerId = '';
       }
-      this.storeService.updateStore( store );
+    }
+  }
 
-      const temp = this.users.filter(
-        value => value.uId === this.managerId )[0];
+  getAvailableManagers( store: StoreModel ) {
+    return this.users.filter( user => user.uType === 'manager' && !store.sManagerIds.some( value => value === user.uId ) );
+  }
 
-      if ( !temp.mStoreIds ) {
-        temp.mStoreIds = [];
+  addNewStore() {
+    const dialogRef = this.matDialog.open( AddNewStoreComponent, {} );
+  }
+
+  removeStore( store: StoreModel ) {
+    if ( confirmation() ) {
+      const sId = store.sId;
+      for ( let user of this.users ) {
+        if ( user.uType === 'customer' && user.preferedStore === sId ) {
+          user.preferedStore = '';
+          this.userService.updateUser( user );
+        }
+        if ( user.uType === 'manager' && user.mStoreIds.some( id => id === sId ) ) {
+          user.mStoreIds.splice( user.mStoreIds.indexOf( sId ), 1 );
+          this.userService.updateUser( user );
+        }
       }
 
-      temp.mStoreIds.push( store.sId );
-      this.userService.updateUser( temp );
-      this.managerId = '';
+      this.storeService.deleteStore( store );
+
+      this.userService.showToast( 'Store ' + store.sName + ' has been successfully removed!!!' );
+
     }
   }
 }

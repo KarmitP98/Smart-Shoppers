@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
+import { UserModel } from '../../../model/models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { StoreService } from '../../../services/store.service';
 
 @Component( {
               selector: 'app-manager',
@@ -8,20 +11,44 @@ import { UserService } from '../../../services/user.service';
             } )
 export class ManagerComponent implements OnInit {
 
-  constructor( public userService: UserService ) { }
+  user: UserModel;
 
-  ngOnInit(): void {
+  constructor( public userService: UserService,
+               public storeService: StoreService,
+               public route: ActivatedRoute,
+               public router: Router ) {
   }
 
-  // selectStore(): any {
-  //   const dialogRef = this.dialog.open( StoreSelectionComponent, {
-  //     data: 'manager',
-  //     width: '75vw',
-  //     height: '75vh'
-  //   } );
-  //
-  //   dialogRef.afterClosed().subscribe( result => {
-  //     console.log( `Dialog result: ${ result }` );
-  //   } );
-  // }
+  ngOnInit(): void {
+
+    const uId = this.route.snapshot.parent.params.uId;
+
+    const sub = this.userService.fetchUser( 'uId', '==', uId )
+                    .valueChanges()
+                    .subscribe( value => {
+                      if ( value?.length > 0 ) {
+                        this.user = value[0];
+                      }
+                      if ( !this.user.disabled ) {
+                        this.router.navigate( [ 'stores' ], { relativeTo: this.route } );
+                      }
+                      sub.unsubscribe();
+                    } );
+
+  }
+
+  getStores() {
+    return this.storeService.fetchStore( 'sManagerIds', 'array-contains', this.user.uId )
+               .valueChanges()
+               .toPromise()
+               .then( ( value ) => {
+                 return value;
+               } )
+
+  }
+
+
+  removeAccount() {
+    this.userService.deleteAccount( this.user )
+  }
 }

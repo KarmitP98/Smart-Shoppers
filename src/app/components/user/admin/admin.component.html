@@ -1,17 +1,32 @@
-<mat-toolbar>
+<mat-toolbar color = 'primary'>
   <mat-toolbar-row>
     <img alt = 'Company Logo'
          class = 'company-logo-toolbar'
          routerLink = 'home'
-         src = 'assets/logo/shoppers-logo-black.jpg'>
-    <button (click) = 'setup()' [disabled] = 'stores' mat-button>Setup Defaults</button>
+         src = 'assets/logo/shoppers-logo-white.jpg'>
+    <!--        <button (click)='setup()'-->
+    <!--                [disabled]='stores.length > 0'-->
+    <!--                matTooltip="Setup Default"-->
+    <!--                mat-button-->
+    <!--                class="menu-button">-->
+    <!--          Setup Defaults-->
+    <!--        </button>-->
     &nbsp;
-    <button mat-button routerLink = 'manager-edit'>Managers</button>
+    <button class = 'menu-button' mat-button
+            matTooltip = 'Managers'
+            routerLink = 'manager-edit'>
+      <mat-icon>supervisor_account</mat-icon>
+    </button>
     &nbsp;
-    <button mat-button routerLink = 'store-edit'>Stores</button>
+    <button class = 'menu-button' mat-button
+            matTooltip = 'Stores'
+            routerLink = 'store-edit'>
+      <mat-icon>storefront</mat-icon>
+    </button>
     <span class = 'spacer'></span>
     <button (click) = 'this.userService.logOut()'
-            color = 'warn' mat-raised-button>Log Out
+            color = 'warn' mat-raised-button>
+      <mat-icon>power_settings_new</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>

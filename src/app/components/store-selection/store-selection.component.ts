@@ -29,8 +29,8 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
                private dialog: MatDialog ) {
 
 
-    if ( this.data.preferedStore ) {
-      this.chosen = this.data.preferedStore;
+    if ( this.data.savedStore ) {
+      this.chosen = this.data.savedStore;
     }
 
     this.storeSub = this.storeService.fetchStore()
@@ -39,7 +39,8 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
                           if ( value?.length > 0 ) {
                             this.allStores = value
                               .sort(
-                                a => a.sId === this.data.preferedStore ? -1 : 1 );
+                                a => a.sId === this.data.savedStore ? -1 : 1 )
+                              .filter( value1 => value1.status );
                             this.stores = this.allStores;
                           }
                         } );
@@ -99,11 +100,11 @@ export class StoreSelectionComponent implements OnInit, OnDestroy {
 
   addStore( save: boolean ) {
     if ( save ) {
-      this.data.preferedStore = this.chosen;
-      this.userService.updateUser( this.data );
+      this.data.savedStore = this.chosen;
     }
+    this.data.preferedStore = this.chosen;
+    this.userService.updateUser( this.data );
 
-    this.dialog.closeAll();
 
   }
 }

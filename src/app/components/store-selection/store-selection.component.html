@@ -58,11 +58,16 @@
   </mat-card>
 </mat-dialog-content>
 
-
 <mat-dialog-actions align = 'end' class = 'float-right'>
-  <button [mat-dialog-close] = 'this.chosen'
-          color = 'accent'
-          mat-raised-button>Select
+  <button
+    [mat-dialog-close] = '{store: chosen,save: true}'
+    color = 'accent'
+    mat-raised-button>Save Preferred Store
+  </button>
+  <button
+    [mat-dialog-close] = '{store: chosen,save: false}'
+    color = 'primary'
+    mat-raised-button>Shop at this store
   </button>
   <button color = 'warn'
           mat-dialog-close

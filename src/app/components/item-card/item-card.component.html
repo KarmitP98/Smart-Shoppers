@@ -16,10 +16,15 @@
     [style] = 'item.iStoreQuantity > 0 ? "color: green":"color: red"'>{{item.iStoreQuantity > 0 ? item.iStoreQuantity : "Out of stock!"}}</b>
     <br>
     Location: <b>Isle {{item.isle}}</b>
-  </mat-card-content>
-  <mat-dialog-actions>
     <p *ngIf = '!item.onSale'>
       <mat-card-title>Price: {{item.price | currency}}</mat-card-title>
     </p>
+  </mat-card-content>
+  <button mat-icon-button
+          matTooltip = 'Quick Add to Cart!'
+          matTooltipPosition = 'above'>
+    <mat-icon color = 'accent'>add_shopping_cart</mat-icon>
+  </button>
+  <mat-dialog-actions>
   </mat-dialog-actions>
 </mat-card>

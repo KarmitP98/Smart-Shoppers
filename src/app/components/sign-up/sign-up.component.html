@@ -1,6 +1,3 @@
-<!--suppress ALL -->
-
-
 <div class = 'text-center' style = 'margin-top: 20vh;'>
   <img alt = 'Company Logo'
        class = 'company-logo'
@@ -23,12 +20,17 @@
     <mat-form-field appearance = 'outline' class = 'w-25'>
       <mat-label>Password</mat-label>
       <input [(ngModel)] = 'uPassword' matInput
+             maxlength = '15'
              minlength = '6'
              name = 'password'
+             pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,15}$'
              placeholder = '******'
              required
              type = 'password'>
     </mat-form-field>
+    <br>
+    <mat-hint><b>Password</b> must have at least 1 <b>Number, lower case and upper case. Min: 6 || Max: 15</b>
+    </mat-hint>
     <br>
     <mat-form-field appearance = 'outline' class = 'w-25'>
       <mat-label>Name</mat-label>
@@ -41,8 +43,9 @@
     <br>
 
     <div>
-      <button color = 'primary'
+      <button [disabled] = 'loginForm.invalid'
               mat-raised-button
+              color = 'primary'
               style = 'width: 12vw;'
               type = 'submit'>
         Signup
@@ -61,15 +64,18 @@
   <br>
   <mat-button-toggle-group #group = 'matButtonToggleGroup' [(ngModel)] = 'uType'
                            appearance = 'legacy'>
-    <mat-button-toggle aria-label = 'Text align left' style = 'width: 5vw;'
+    <mat-button-toggle [class.selected-customer] = "uType === 'customer'" aria-label = 'Text align left'
+                       style = 'width: 5vw;'
                        value = 'customer'>
       <mat-label>Customer</mat-label>
     </mat-button-toggle>
-    <mat-button-toggle aria-label = 'Text align center' style = 'width: 5vw;'
+    <mat-button-toggle [class.selected-manager] = "uType === 'manager'" aria-label = 'Text align center'
+                       style = 'width: 5vw;'
                        value = 'manager'>
       <mat-label>Manager</mat-label>
     </mat-button-toggle>
-    <mat-button-toggle aria-label = 'Text align right' style = 'width: 5vw;'
+    <mat-button-toggle [class.selected-admin] = "uType === 'admin'" aria-label = 'Text align right'
+                       style = 'width: 5vw;'
                        value = 'admin'>
       <mat-label>Admin</mat-label>
     </mat-button-toggle>
