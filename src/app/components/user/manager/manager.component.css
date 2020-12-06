@@ -1,0 +1,5 @@
+.body {
+  background: url("src/assets/images/bk-3.jpg") fixed no-repeat;
+  background-size: 100vw 100vh;
+  min-height: 100vh;
+  }

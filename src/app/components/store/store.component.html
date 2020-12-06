@@ -1,105 +1,103 @@
-<div class = 'body'>
-  <br>
-  <div *ngIf = ' user' class = 'w-75 text-center' style = 'margin-left: 12.5vw;'>
+<br>
+<div *ngIf = ' user' class = 'w-75 text-center' style = 'margin-left: 12.5vw;'>
 
-    <div *ngIf = 'store'>
+  <div *ngIf = 'store'>
 
 
-      <h1>Welcome to {{store.sName}}    </h1>
+    <h1>Welcome to {{store.sName}}    </h1>
 
-      <div *ngIf = "user.uType === 'manager'">
-        <mat-form-field *ngIf = 'allItems' appearance = 'fill'>
-          <mat-label>Add Item to Store</mat-label>
-          <mat-select [(ngModel)] = 'newItem' name = 'newItem'>
-            <mat-option [value] = 'null'>Add a new Item to Store</mat-option>
-            <mat-option *ngFor = 'let item of getAvailableItems()'
-                        [value] = 'item'>
-              {{item.iName}} - {{item.iCategory}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        &nbsp;
-        <button (click) = 'addItemToStore(newItem)' [disabled] = '!newItem'
-                color = 'accent'
-                mat-icon-button
-                matTooltip = 'Add New Item to Store'>
-          <mat-icon>add_box</mat-icon>
-        </button>
-        <hr>
-      </div>
-      <mat-form-field appearance = 'fill'>
-        <mat-label>Category</mat-label>
-        <mat-select [(ngModel)] = 'category'>
-          <mat-option [value] = '""'>All</mat-option>
-          <mat-option *ngFor = 'let cat of categories' [value] = 'cat'>{{cat | titlecase}}</mat-option>
+    <div *ngIf = "user.uType === 'manager'">
+      <mat-form-field *ngIf = 'allItems' appearance = 'fill'>
+        <mat-label>Add Item to Store</mat-label>
+        <mat-select [(ngModel)] = 'newItem' name = 'newItem'>
+          <mat-option [value] = 'null'>Add a new Item to Store</mat-option>
+          <mat-option *ngFor = 'let item of getAvailableItems()'
+                      [value] = 'item'>
+            {{item.iName}} - {{item.iCategory}}
+          </mat-option>
         </mat-select>
       </mat-form-field>
-
       &nbsp;
-
-      <mat-form-field appearance = 'fill' class = 'w-50'>
-        <mat-label>Search item...</mat-label>
-        <input (keypress) = '$event.key === "Enter" ? search(false): ""' (keyup) = 'search(false)'
-               [(ngModel)] = 'itemName'
-               matInput
-               placeholder = 'Item Name'>
-        <mat-icon (click) = 'search(false)' class = 'search-icon' matSuffix>search</mat-icon>
-      </mat-form-field>
-
+      <button (click) = 'addItemToStore(newItem)' [disabled] = '!newItem'
+              color = 'accent'
+              mat-icon-button
+              matTooltip = 'Add New Item to Store'>
+        <mat-icon>add_box</mat-icon>
+      </button>
       <hr>
-      <mat-card *ngIf = 'this.getSuggestions()?.length> 0 && this.category?.length === 0 && this.itemName?.length === 0'
-                class = 'suggest mat-elevation-z7'>
-        <mat-card-title>
-          Suggested Item...
-        </mat-card-title>
-        <hr>
-        <div class = 'row' style = 'align-items: center; justify-content: center'>
-          <div *ngFor = 'let item of getSuggestions()' style = 'margin: 8px 16px;'>
-            <app-item-card
-              [color] = '"warning"'
-              [item] = 'item'
-              [store] = 'store'
-              [user] = 'user'>
-            </app-item-card>
-          </div>
-        </div>
-      </mat-card>
+    </div>
+    <mat-form-field appearance = 'fill'>
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)] = 'category'>
+        <mat-option [value] = '""'>All</mat-option>
+        <mat-option *ngFor = 'let cat of categories' [value] = 'cat'>{{cat | titlecase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    &nbsp;
+
+    <mat-form-field appearance = 'fill' class = 'w-50'>
+      <mat-label>Search item...</mat-label>
+      <input (keypress) = '$event.key === "Enter" ? search(false): ""' (keyup) = 'search(false)'
+             [(ngModel)] = 'itemName'
+             matInput
+             placeholder = 'Item Name'>
+      <mat-icon (click) = 'search(false)' class = 'search-icon' matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <hr>
+    <mat-card *ngIf = 'this.getSuggestions()?.length> 0 && this.category?.length === 0 && this.itemName?.length === 0'
+              class = 'suggest mat-elevation-z7'>
+      <mat-card-title>
+        Suggested Item...
+      </mat-card-title>
       <hr>
-
-      <!--    [style] = '"max-width: "+getSaleItems(row).length * 25+"%"'-->
-      <mat-card *ngIf = 'this.getSaleItems()?.length> 0 && this.category?.length === 0 && this.itemName?.length === 0'
-                class = 'sale mat-elevation-z7'>
-        <mat-card-title>
-          ON SALE
-        </mat-card-title>
-        <hr>
-        <div *ngFor = 'let row of getRows(getSaleItems().length)' class = 'row'
-             style = 'align-items: center; justify-content: center'>
-          <div *ngFor = 'let item of getSaleItems(row)' style = 'margin: 8px 16px;'>
-            <app-item-card
-              [color] = '"danger"'
-              [item] = 'item'
-              [store] = 'store'
-              [user] = 'user'>
-            </app-item-card>
-          </div>
-        </div>
-      </mat-card>
-      <hr>
-
-
-      <div *ngFor = 'let row of getRows(search(false ).length)'
-           class = 'row' style = 'align-items: center; justify-content: center'>
-        <div *ngFor = 'let item of search(false, row)' style = 'margin: 8px 16px;'>
-          <app-item-card [color] = '"rich-black"'
-                         [item] = 'item'
-                         [store] = 'this.store'
-                         [user] = 'this.user'>
+      <div class = 'row' style = 'align-items: center; justify-content: center'>
+        <div *ngFor = 'let item of getSuggestions()' style = 'margin: 8px 16px;'>
+          <app-item-card
+            [color] = '"warning"'
+            [item] = 'item'
+            [store] = 'store'
+            [user] = 'user'>
           </app-item-card>
         </div>
       </div>
+    </mat-card>
 
+    <hr>
+
+    <!--    [style] = '"max-width: "+getSaleItems(row).length * 25+"%"'-->
+    <mat-card *ngIf = 'this.getSaleItems()?.length> 0 && this.category?.length === 0 && this.itemName?.length === 0'
+              class = 'sale mat-elevation-z7'>
+      <mat-card-title>
+        ON SALE
+      </mat-card-title>
+      <hr>
+      <div *ngFor = 'let row of getRows(getSaleItems().length)' class = 'row'
+           style = 'align-items: center; justify-content: center'>
+        <div *ngFor = 'let item of getSaleItems(row)' style = 'margin: 8px 16px;'>
+          <app-item-card
+            [color] = '"danger"'
+            [item] = 'item'
+            [store] = 'store'
+            [user] = 'user'>
+          </app-item-card>
+        </div>
+      </div>
+    </mat-card>
+    <hr>
+
+
+    <div *ngFor = 'let row of getRows(search(false ).length)'
+         class = 'row' style = 'align-items: center; justify-content: center'>
+      <div *ngFor = 'let item of search(false, row)' style = 'margin: 8px 16px;'>
+        <app-item-card [color] = '"rich-black"'
+                       [item] = 'item'
+                       [store] = 'this.store'
+                       [user] = 'this.user'>
+        </app-item-card>
+      </div>
     </div>
+
   </div>
 </div>

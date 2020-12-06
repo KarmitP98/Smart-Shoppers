@@ -1,56 +1,59 @@
-<div *ngIf = 'users' class = 'text-center container' style = 'margin-top: 5vh;'>
+<div class = 'body'>
+  <div *ngIf = 'users' class = 'text-center container' style = 'padding-top: 5vh;'>
 
-  <h1>Managers
-    <button (click) = 'addManager()' class = 'float-right' color = 'accent'
-            mat-icon-button
-            matTooltip = 'Add New Manager'>
-      <mat-icon>person_add</mat-icon>
-    </button>
-  </h1>
-  <hr>
-
-  <mat-card *ngFor = 'let user of users' class = 'text-left mat-elevation-z4 w-50'
-            style = 'margin-bottom: 8px;margin-left: 12.5vw;'>
-    <mat-card-header>
-      <img [src] = 'user.uProPic' alt = 'PP' matCardAvatar>
-      <mat-card-title>{{user.uName}}</mat-card-title>
-      <mat-card-subtitle>{{user.uType | titlecase}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <h3>Email: {{user.uEmail}}
-        <br>
-          Level: {{user.uType}}
-        <br>
-          Stores Managed: {{user.mStoreIds?.length}} Stores
-      </h3>
-      <br>
-      <mat-form-field appearance = 'outline' class = 'w-100'>
-        <mat-label>Name</mat-label>
-        <input #name [(ngModel)] = 'user.uName'
-               matInput
-               minlength = '1'
-               name = 'name'
-               required
-               type = 'text'>
-        <mat-error *ngIf = 'user.uName.length < 1' matsuffix>Name Cannot be empty!!!</mat-error>
-      </mat-form-field>
-      <br>
-
-    </mat-card-content>
-    <mat-card-actions align = 'end'>
-      <button (click) = 'removeManager(user)'
-              class = 'w-50'
-              color = 'warn'
-              mat-raised-button>
-        REMOVE MANAGER
+    <h1>Managers
+      <button (click) = 'addManager()' class = 'float-right' color = 'accent'
+              mat-icon-button
+              matTooltip = 'Add New Manager'>
+        <mat-icon>person_add</mat-icon>
       </button>
-      <button (click) = 'save(user)'
-              [disabled] = 'user.uName.length < 1'
-              class = 'w-50'
-              color = 'primary'
-              mat-raised-button>Update
-      </button>
-    </mat-card-actions>
-  </mat-card>
+    </h1>
+    <hr>
 
+    <mat-card *ngFor = 'let user of users' class = 'text-left mat-elevation-z4 w-50'
+              style = 'margin-bottom: 8px;margin-left: 12.5vw;'>
+      <mat-card-header>
+        <img [src] = 'user.uProPic' alt = 'PP' matCardAvatar>
+        <mat-card-title>{{user.uName}}</mat-card-title>
+        <mat-card-subtitle>{{user.uType | titlecase}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h3>Email: {{user.uEmail}}
+          <br>
+            Level: {{user.uType}}
+          <br>
+            Stores Managed: {{user.mStoreIds?.length}} Stores
+        </h3>
+        <br>
+        <mat-form-field appearance = 'outline' class = 'w-100'>
+          <mat-label>Name</mat-label>
+          <input #name [(ngModel)] = 'user.uName'
+                 matInput
+                 minlength = '1'
+                 name = 'name'
+                 required
+                 type = 'text'>
+          <mat-error *ngIf = 'user.uName.length < 1' matsuffix>Name Cannot be empty!!!</mat-error>
+        </mat-form-field>
+        <br>
+
+      </mat-card-content>
+      <mat-card-actions align = 'end'>
+        <button (click) = 'removeManager(user)'
+                class = 'w-50'
+                color = 'warn'
+                mat-raised-button>
+          REMOVE MANAGER
+        </button>
+        <button (click) = 'save(user)'
+                [disabled] = 'user.uName.length < 1'
+                class = 'w-50'
+                color = 'primary'
+                mat-raised-button>Update
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+  <br>
 </div>

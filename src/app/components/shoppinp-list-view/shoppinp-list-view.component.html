@@ -1,87 +1,94 @@
-<div *ngIf = 'user' class = 'text-center container' style = 'margin-top: 5vh;'>
+<div class = 'body'>
+  <br>
+  <br>
+  <div *ngIf = 'user' class = 'text-center container'>
+    <mat-card class = 'text-left w-50 mat-elevation-z7 list' style = 'margin-left: 25%;'>
+      <mat-card-header>
+        <mat-card-title>{{this.user?.currentShoppingList.lName.split(" - ")[0]}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list role = 'list'>
+          <mat-list-item *ngFor = 'let item of getCurrentItems(this.user?.currentShoppingList)'>
+            <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
+            <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
+            <div mat-line>Category: <b>{{item.item.itemDetail.iCategory|titlecase}}</b></div>
+            <div mat-line>Isle: <b>{{item.item.isle}}</b></div>
+            <div mat-line>Size: <b>{{getItemSize(item.iSize)}}</b></div>
+            <div mat-line>Quantity: <b>{{item.iQuantity}}</b>
+                          &nbsp;&nbsp;&nbsp;
+              <button (click) = 'changeQuantity(item,-1)' mat-icon-button>
+                <mat-icon color = 'warn'>expand_more</mat-icon>
+              </button>&nbsp;
+              <button (click) = 'changeQuantity(item,1)' [disabled] = 'item.iQuantity === item.item.iStoreQuantity'
+                      mat-icon-button>
+                <mat-icon color = 'accent'>expand_less</mat-icon>
+              </button>
+              <mat-hint mat-line>Stock: {{item.item.iStoreQuantity}}</mat-hint>
+            </div>
+            <div mat-line><h4>Price: {{item.iQuantity}} X {{item.item.price | currency}}
+                              = <b>{{(item.iQuantity * item.item.price) | currency}}</b></h4></div>
+            <div mat-line>
+              <button (click) = 'removeItem(item)'
+                      class = 'w-100'
+                      color = 'warn'
+                      mat-raised-button>Remove
+              </button>
+              <hr>
+            </div>
+          </mat-list-item>
+        </mat-list>
 
-  <mat-card class = 'text-left w-50 mat-elevation-z7' style = 'margin-left: 25%;'>
-    <mat-card-header>
-      <mat-card-title>{{this.user.currentShoppingList.lName.split(" - ")[0]}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list role = 'list'>
-        <mat-list-item *ngFor = 'let item of getCurrentItems(this.user.currentShoppingList)'>
-          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
-          <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
-          <div mat-line>Category: <b>{{item.item.itemDetail.iCategory|titlecase}}</b></div>
-          <div mat-line>Isle: <b>{{item.item.isle}}</b></div>
-          <div mat-line>Size: <b>{{getItemSize(item.iSize)}}</b></div>
-          <div mat-line>Quantity: <b>{{item.iQuantity}}</b>
-                        &nbsp;&nbsp;&nbsp;
-            <button (click) = 'changeQuantity(item,-1)' mat-icon-button>
-              <mat-icon color = 'warn'>expand_more</mat-icon>
-            </button>&nbsp;
-            <button (click) = 'changeQuantity(item,1)' [disabled] = 'item.iQuantity === item.item.iStoreQuantity'
-                    mat-icon-button>
-              <mat-icon color = 'accent'>expand_less</mat-icon>
-            </button>
-            <mat-hint mat-line>Stock: {{item.item.iStoreQuantity}}</mat-hint>
-          </div>
-          <div mat-line><h4>Price: {{item.iQuantity}} X {{item.item.price | currency}}
-                            = <b>{{(item.iQuantity * item.item.price) | currency}}</b></h4></div>
-          <div mat-line>
-            <button (click) = 'removeItem(item)'
-                    class = 'w-100'
-                    color = 'warn'
-                    mat-raised-button>Remove
-            </button>
-            <hr>
-          </div>
-        </mat-list-item>
-      </mat-list>
+        <mat-card-actions align = 'end'>
+          <button (click) = 'saveShoppingList(false)' [disabled] = 'user?.currentShoppingList.sItems.length === 0'
+                  color = 'warn'
+                  mat-icon-button
+                  matTooltip = 'Cancel'
+                  style = 'width: 75px;'>
+            <mat-icon>cancel</mat-icon>
+          </button>
+          <button (click) = 'saveShoppingList(true)' [disabled] = 'user?.currentShoppingList.sItems.length === 0'
+                  color = 'accent'
+                  mat-icon-button
+                  matTooltip = 'Save'
+                  style = 'width: 75px;'>
+            <mat-icon>check_circle</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
 
-      <mat-card-actions align = 'end'>
-        <button (click) = 'saveShoppingList(false)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
-                color = 'warn'
-                mat-icon-button
-                matTooltip = 'Cancel'
-                style = 'width: 75px;'>
-          <mat-icon>cancel</mat-icon>
-        </button>
-        <button (click) = 'saveShoppingList(true)' [disabled] = 'user.currentShoppingList.sItems.length === 0'
-                color = 'accent'
-                mat-icon-button
-                matTooltip = 'Save'
-                style = 'width: 75px;'>
-          <mat-icon>check_circle</mat-icon>
-        </button>
-      </mat-card-actions>
-    </mat-card-content>
-  </mat-card>
+    <hr>
+    <hr>
 
-  <hr>
-  <hr>
-  <h2>Previous Shopping Lists</h2>
-  <mat-accordion class = 'text-left' multi>
-    <mat-expansion-panel *ngFor = 'let list of getCurrentShoppingList()'
-                         hideToggle
-                         style = 'margin-bottom: 8px;'>
-      <mat-expansion-panel-header>
-        <mat-panel-title>{{list.lName}}</mat-panel-title>
-        <mat-icon [color] = "list.sStatus === 'pending' ? 'primary': list.sStatus === 'cancelled'? 'warn':'accent'"
-                  [matTooltip] = 'list.sStatus | titlecase'>
-          save
-        </mat-icon>
-      </mat-expansion-panel-header>
-      <mat-list role = 'list'>
-        <mat-list-item *ngFor = 'let item of getCurrentItems(list)'>
-          <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
-          <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
-          <div mat-line>Category: <b>{{item.item.itemDetail.iCategory|titlecase}}</b></div>
-          <div mat-line>Isle: <b>{{item.item.isle}}</b></div>
-          <div mat-line>Quantity: <b>{{item.iQuantity}}</b></div>
-          <div mat-line>Size: <b>{{getItemSize(item.iSize)}}</b></div>
-          <div mat-line>
-            <hr>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
-  </mat-accordion>
+    <h2>Previous Shopping Lists</h2>
+    <mat-accordion class = 'text-left' multi>
+      <mat-expansion-panel #panel
+                           *ngFor = 'let list of getCurrentShoppingList()'
+                           [ngClass] = 'getListStatus(list)'
+                           hideToggle
+                           style = 'margin-bottom: 8px;'>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{list.lName}}</mat-panel-title>
+          <mat-icon [color] = "list.sStatus === 'pending' ? 'primary': list.sStatus === 'cancelled'? 'warn':'accent'"
+                    [matTooltip] = 'list.sStatus | titlecase'>
+            save
+          </mat-icon>
+        </mat-expansion-panel-header>
+        <mat-list role = 'list'>
+          <mat-list-item *ngFor = 'let item of getCurrentItems(list)'>
+            <img [src] = 'item.item.itemDetail.iIcon' alt = 'i' mat-list-avatar>
+            <div mat-line><b>{{item.item.itemDetail.iName}}</b></div>
+            <div mat-line>Category: <b>{{item.item.itemDetail.iCategory|titlecase}}</b></div>
+            <div mat-line>Isle: <b>{{item.item.isle}}</b></div>
+            <div mat-line>Quantity: <b>{{item.iQuantity}}</b></div>
+            <div mat-line>Size: <b>{{getItemSize(item.iSize)}}</b></div>
+            <div mat-line>
+              <hr>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <br>
 </div>

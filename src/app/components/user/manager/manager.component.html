@@ -1,36 +1,38 @@
-<mat-toolbar *ngIf = 'this.user' color = 'primary'>
-  <mat-toolbar-row>
-    <img alt = 'Company Logo'
-         class = 'company-logo-toolbar'
-         routerLink = 'stores'
-         src = 'assets/logo/shoppers-logo-white.jpg'>
-    &nbsp;
-    <button [disabled] = '!this.user.mStoreIds || this.user.mStoreIds?.length === 0' class = 'menu-button'
-            mat-button
-            matTooltip = 'Stores'
-            routerLink = 'stores'>
-      <mat-icon>shopping_bag</mat-icon>
-    </button>
-    <!--    <button mat-button routerLink = 'stores'>Stores</button>-->
-    &nbsp;
-    <span class = 'spacer'></span>
-    <button (click) = 'this.userService.logOut()'
-            color = 'warn' mat-raised-button>
-      <mat-icon>power_settings_new</mat-icon>
-    </button>
-  </mat-toolbar-row>
+<div class = 'body'>
+  <mat-toolbar *ngIf = 'this.user' color = 'primary'>
+    <mat-toolbar-row>
+      <img alt = 'Company Logo'
+           class = 'company-logo-toolbar'
+           routerLink = 'stores'
+           src = 'assets/logo/shoppers-logo-white.jpg'>
+      &nbsp;
+      <button [disabled] = '!this.user.mStoreIds || this.user.mStoreIds?.length === 0' class = 'menu-button'
+              mat-button
+              matTooltip = 'Stores'
+              routerLink = 'stores'>
+        <mat-icon>shopping_bag</mat-icon>
+      </button>
+      <!--    <button mat-button routerLink = 'stores'>Stores</button>-->
+      &nbsp;
+      <span class = 'spacer'></span>
+      <button (click) = 'this.userService.logOut()'
+              color = 'warn' mat-raised-button>
+        <mat-icon>power_settings_new</mat-icon>
+      </button>
+    </mat-toolbar-row>
 </mat-toolbar>
-<br>
 
-<div *ngIf = 'user?.disabled' class = 'text-center container'
-     style = 'margin-top: 40vh;'>
-  <mat-error><b>WARNING: YOUR ACCOUNT HAS BEEN PERMANENTLY DISABLED BY THE ADMIN! PLEASE DEACTIVATE YOUR ACCOUNT!</b>
-  </mat-error>
-  <br><br>
-  <button (click) = 'removeAccount()' color = 'warn' mat-raised-button>
-    REMOVE YOUR ACCOUNT FROM THE SYSTEM
-  </button>
-</div>
-<div *ngIf = '!this.user?.disabled' class = 'w-75 text-center' style = 'margin-left: 12.5vw;'>
-  <router-outlet></router-outlet>
+  <div *ngIf = 'user?.disabled' class = 'text-center container'
+       style = 'margin-top: 40vh;'>
+    <mat-error><b>WARNING: YOUR ACCOUNT HAS BEEN PERMANENTLY DISABLED BY THE ADMIN! PLEASE DEACTIVATE YOUR ACCOUNT!</b>
+    </mat-error>
+    <br><br>
+    <button (click) = 'removeAccount()' color = 'warn' mat-raised-button>
+      REMOVE YOUR ACCOUNT FROM THE SYSTEM
+    </button>
+  </div>
+
+  <div *ngIf = '!this.user?.disabled'>
+    <router-outlet></router-outlet>
+  </div>
 </div>

@@ -1,0 +1,15 @@
+.list {
+  background: rgba(255, 255, 255, 0.2);
+  }
+
+.approved-panel {
+  background: rgba(0, 255, 0, .2);
+  }
+
+.declined-panel {
+  background: rgba(255, 0, 0, .2);
+  }
+
+.current-panel {
+  background: rgba(255, 255, 255, 0.2);
+  }
