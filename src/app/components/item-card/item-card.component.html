@@ -1,3 +1,4 @@
+<!--[style] = '"background: var(&#45;&#45;"+this.color+");"'-->
 <div class = 'card'>
   <div class = 'titleBx'>
     <h4>{{item.itemDetail.iName | uppercase}}</h4>
@@ -10,7 +11,7 @@
     <h3>Isle: {{item.isle}}</h3>
 
     <h2 class = 'price'>{{item.price | currency}}
-      <span *ngIf = 'item.onSale' style = 'color: var(--red); font-size: small'><del>{{item.oldPrice | currency}}</del></span>
+      <span *ngIf = 'item.onSale' style = 'color: red;font-size: small'><del>{{item.oldPrice | currency}}</del></span>
     </h2>
 
     <a *ngIf = 'item.iStoreQuantity === 0 && user.uType === "customer"'

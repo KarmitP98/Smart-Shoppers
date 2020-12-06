@@ -15,6 +15,7 @@ export class ItemCardComponent implements OnInit {
   @Input() user: UserModel;
   @Input() item: ItemModel;
   @Input() store: StoreModel;
+  @Input() color;
 
   // @ViewChild( 'card', { static: false } ) card;
 

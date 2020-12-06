@@ -1,54 +1,52 @@
 <!--suppress ALL -->
 
+<body>
+<div class = 'card-container'>
+  <div class = 'image-div'>
+    <img alt = 'some image'
+         src = 'assets/images/login-bk.jpg'>
+  </div>
 
-<div class = 'text-center' style = 'margin-top: 20vh;'>
-
-  <img alt = 'Company Logo'
-       class = 'company-logo'
-       src = 'assets/logo/shoppers-logo-black.jpg'>
-
-  <br>
-  <br>
-
-  <form #loginForm = 'ngForm' (ngSubmit) = 'loginWithEmail()'>
-
-    <mat-form-field appearance = 'outline' class = 'w-25'>
-      <mat-label>Email</mat-label>
-      <input [(ngModel)] = 'uEmail' email
-             matInput
-             name = 'email'
-             placeholder = 'abc@def.com'
-             required
-             type = 'email'>
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance = 'outline' class = 'w-25'>
-      <mat-label>Password</mat-label>
-      <input [(ngModel)] = 'uPassword' matInput
-             minlength = '6'
-             name = 'password'
-             placeholder = '******'
-             required
-             type = 'password'>
-    </mat-form-field>
-    <br>
-
-    <div>
+  <div class = 'form-div'>
+    <h1><b>Login</b></h1>
+    <form #loginForm = 'ngForm' (ngSubmit) = 'loginWithEmail()'>
+      <mat-form-field appearance = 'fill' class = 'w-100'>
+        <mat-label>Email</mat-label>
+        <input [(ngModel)] = 'uEmail' email
+               matInput
+               name = 'email'
+               placeholder = 'abc@def.com'
+               required
+               type = 'email'>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance = 'fill' class = 'w-100'>
+        <mat-label>Password</mat-label>
+        <input [(ngModel)] = 'uPassword' matInput
+               minlength = '6'
+               name = 'password'
+               placeholder = '******'
+               required
+               type = 'password'>
+      </mat-form-field>
+      <br>
+      <br>
+      <br>
       <button color = 'primary'
               mat-raised-button
-              style = 'width: 12vw;'
+              class = 'submit-button'
               type = 'submit'>
         Login
       </button>
-      &nbsp;
+      <br>
+      <br>
       <button color = 'accent'
               mat-raised-button
               routerLink = '/signup'
-              style = 'width: 12vw;'
-              type = 'button'>
+              class = 'submit-button'>
         Sign Up
       </button>
-    </div>
-  </form>
-  <br>
+    </form>
+  </div>
 </div>
+</body>
