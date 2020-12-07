@@ -40,6 +40,7 @@ export class StoresComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    // tslint:disable-next-line:no-unused-expression
     this.storeSub ? this.storeSub.unsubscribe() : null;
   }
 

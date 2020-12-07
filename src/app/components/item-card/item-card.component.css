@@ -138,3 +138,7 @@
   opacity: 1;
   top: 0;
   }
+
+.card .contentBx .buy:hover {
+  transform: scale(1.2);
+}

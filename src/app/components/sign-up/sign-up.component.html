@@ -47,29 +47,24 @@
       <br>
 
     </form>
-    <div class = 'text-center'>
+    <div class = 'text-center w-100'>
       <mat-button-toggle-group #group = 'matButtonToggleGroup'
                                [(ngModel)] = 'uType'
                                appearance = 'standard'>
         <mat-button-toggle [class.selected-customer] = "uType === 'customer'" aria-label = 'Text align left'
-                           style = 'width: 5vw;'
                            value = 'customer'>
           <mat-label>Customer</mat-label>
         </mat-button-toggle>
         <mat-button-toggle [class.selected-manager] = "uType === 'manager'" aria-label = 'Text align center'
-                           style = 'width: 5vw;'
                            value = 'manager'>
           <mat-label>Manager</mat-label>
         </mat-button-toggle>
         <mat-button-toggle [class.selected-admin] = "uType === 'admin'" aria-label = 'Text align right'
-                           style = 'width: 5vw;'
                            value = 'admin'>
           <mat-label>Admin</mat-label>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <br>
-    <br>
     <br>
     <br>
     <button (click) = 'signUpWithEmail()'
