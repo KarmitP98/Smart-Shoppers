@@ -18,9 +18,10 @@ export class ItemCardDetailComponent implements OnInit {
   quantity: number = 1;
   size: number = 2;
   available: number[] = [];
-  newPrice: number = 0;
+  newPrice: number = 10;
   onSaleDate: Timestamp = Timestamp.now();
   onSale: boolean;
+  price: number;
 
   @ViewChild( 'f', { static: true } ) f: NgForm;
 
@@ -115,12 +116,16 @@ export class ItemCardDetailComponent implements OnInit {
   }
 
   saveItem() {
+
+    this.data.item.onSale = this.onSale;
     if ( this.onSale ) {
-      this.data.item.onSale = this.onSale;
       this.data.item.oldPrice = this.data.item.price;
       this.data.item.price = this.newPrice;
       this.data.item.onSaleDate = this.onSaleDate;
+    } else if ( !this.onSale ) {
+      this.data.item.price = this.data.item.oldPrice;
     }
+
 
     this.storeService.updateStore( this.data.store );
     this.showToast( 'Item has been updated!' );

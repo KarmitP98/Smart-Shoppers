@@ -76,6 +76,16 @@
                      required
                      type = 'number'>
             </mat-form-field>
+            <!--            <br>-->
+            <!--            <mat-form-field appearance = 'outline' *ngIf='!onSale'>-->
+            <!--              <mat-label>Price $</mat-label>-->
+            <!--              <input #stock [(ngModel)] = 'price'-->
+            <!--                     matInput-->
+            <!--                     min = '0'-->
+            <!--                     name = 'price'-->
+            <!--                     required-->
+            <!--                     type = 'number'>-->
+            <!--            </mat-form-field>-->
             <mat-error *ngIf = 'stock.value < 0' matSuffix>Stock cannot be less than 0!!!</mat-error>
             <br>
             <mat-slide-toggle #sale

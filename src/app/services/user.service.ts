@@ -55,21 +55,17 @@ export class UserService {
 
   public signUpWithEmail( user: UserModel, password: string ) {
 
-    this.loadingSubject.next( true );
 
     this.afa.createUserWithEmailAndPassword( user.uEmail, password )
         .then( ( value ) => {
 
           user.uId = value.user.uid;
-
           this.addNewUser( user );
 
           this.router.navigate( [ '/', value.user.uid ] );
-          this.loadingSubject.next( false );
         } )
         .catch( ( err ) => {
           this.showToast( err.message, 3000 );
-          this.loadingSubject.next( false );
         } );
 
   }
